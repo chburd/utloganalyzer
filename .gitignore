@@ -4,3 +4,6 @@
 *.jar
 *.war
 *.ear
+
+# Alias file must not be committed
+alias.properties
