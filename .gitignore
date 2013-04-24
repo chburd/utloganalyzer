@@ -8,4 +8,6 @@
 # Alias file must not be committed
 alias.properties
 
-# Log files must not be committed
+# Log and reports files must not be committed
+*.log
+*.csv
