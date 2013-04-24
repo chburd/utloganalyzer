@@ -7,3 +7,5 @@
 
 # Alias file must not be committed
 alias.properties
+
+# Log files must not be committed
