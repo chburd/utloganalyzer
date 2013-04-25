@@ -11,3 +11,4 @@ alias.properties
 # Log and reports files must not be committed
 *.log
 *.csv
+/target
