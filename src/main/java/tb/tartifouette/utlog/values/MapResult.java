@@ -1,29 +1,29 @@
 package tb.tartifouette.utlog.values;
 
 public class MapResult implements Comparable<MapResult> {
-    private int flagRed;
-    public int flagBlue;
+	private int flagRed;
+	public int flagBlue;
 
-    @Override
-    public int compareTo(MapResult o) {
-        return (int)(100 * (computeRatio() - o.computeRatio()));
-    }
+	@Override
+	public int compareTo(MapResult o) {
+		return (int) (100 * (computeRatio() - o.computeRatio()));
+	}
 
-    public double computeRatio() {
-        double ratio = 0;
-        int totalPlays = flagBlue + flagRed;
-        if (totalPlays > 0) {
-            ratio = (double)flagBlue / ((double)totalPlays);
-        }
-        return ratio;
-    }
+	public double computeRatio() {
+		double ratio = 0;
+		int totalPlays = flagBlue + flagRed;
+		if (totalPlays > 0) {
+			ratio = (double) flagBlue / ((double) totalPlays);
+		}
+		return ratio;
+	}
 
-    public int getFlagRed() {
-        return flagRed;
-    }
+	public int getFlagRed() {
+		return flagRed;
+	}
 
-    public void setFlagRed(int flagRed) {
-        this.flagRed = flagRed;
-    }
+	public void setFlagRed(int flagRed) {
+		this.flagRed = flagRed;
+	}
 
 }

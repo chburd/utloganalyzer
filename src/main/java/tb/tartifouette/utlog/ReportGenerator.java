@@ -58,8 +58,8 @@ public class ReportGenerator {
 			log.info("Writing report file " + destDirectory + "/weapons.csv");
 			writer = new FileWriter(destDirectory + "/weapons.csv");
 			writer.write("User;Arme;nb kills" + EOL);
-			Map<WeaponPerKiller, Integer> weapons = MapUtils
-					.sortByValue(stats.getStatsWeapons());
+			Map<WeaponPerKiller, Integer> weapons = MapUtils.sortByValue(stats
+					.getStatsWeapons());
 			for (Entry<WeaponPerKiller, Integer> entry : weapons.entrySet()) {
 				WeaponPerKiller user = entry.getKey();
 				writer.write(user.getKiller() + ";" + user.getWeapon() + ";"
@@ -96,8 +96,8 @@ public class ReportGenerator {
 			writer = new FileWriter(destDirectory + "/users.csv");
 			writer.write("User 1 ;User 2;user 1 kill user 2;user 2 kill user 1"
 					+ EOL);
-			Map<WhoKilledWho, UserStats> users = MapUtils
-					.sortByValue(stats.getStatsKills2());
+			Map<WhoKilledWho, UserStats> users = MapUtils.sortByValue(stats
+					.getStatsKills2());
 			for (Entry<WhoKilledWho, UserStats> entry : users.entrySet()) {
 				WhoKilledWho user = entry.getKey();
 				UserStats value = entry.getValue();
@@ -118,8 +118,8 @@ public class ReportGenerator {
 					+ "tue par le decor;drapeaux ramenes;ingrat(tue ses coequipiers);mal aime(tue par ses coequipiers);"
 					+ "score/partie;frags/partie;drapeaux/partie;frag/mort"
 					+ EOL);
-			Map<UserMap, UserScore> users = MapUtils
-					.sortByValue(stats.getStatsUserMapScore());
+			Map<UserMap, UserScore> users = MapUtils.sortByValue(stats
+					.getStatsUserMapScore());
 			for (Entry<UserMap, UserScore> user : users.entrySet()) {
 				UserScore value = user.getValue();
 				writer.write(user.getKey().getUser() + ";"
@@ -148,8 +148,8 @@ public class ReportGenerator {
 			writer.write("User;score cumule;parties jouees;nb frags;nb morts;nb suicides;tue par le decor;"
 					+ "drapeaux ramenes;ingrat(tue ses coequipiers);mal aime(tue par ses coequipiers);score/partie;"
 					+ "frags/partie;drapeaux/partie;frag/mort" + EOL);
-			Map<String, UserScore> users = MapUtils
-					.sortByValue(stats.getStatsUserScore());
+			Map<String, UserScore> users = MapUtils.sortByValue(stats
+					.getStatsUserScore());
 			for (Entry<String, UserScore> user : users.entrySet()) {
 				UserScore value = user.getValue();
 				writer.write(user.getKey() + ";" + value.getTotalScore() + ";"
@@ -176,8 +176,8 @@ public class ReportGenerator {
 			writer = new FileWriter(destDirectory + "/maps.csv");
 			writer.write("Map;drapeaux bleus;drapeaux rouges;%victoires bleues"
 					+ EOL);
-			Map<String, MapResult> maps = MapUtils
-					.sortByValue(stats.getStatsTeamFlag());
+			Map<String, MapResult> maps = MapUtils.sortByValue(stats
+					.getStatsTeamFlag());
 			for (Entry<String, MapResult> map : maps.entrySet()) {
 				MapResult result = map.getValue();
 				String ratio = "N/A";

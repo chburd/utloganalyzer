@@ -66,7 +66,7 @@ public class Analyzer {
 
 	protected void analyzeFile(Stats stats, File fileToAnalyze)
 			throws FileNotFoundException, IOException {
-		
+
 		BufferedReader reader = null;
 		Reader isReader = null;
 		FileInputStream fileInputStream = null;
@@ -93,14 +93,8 @@ public class Analyzer {
 			IOUtils.closeQuietly(isReader);
 			IOUtils.closeQuietly(gzis);
 			IOUtils.closeQuietly(fileInputStream);
-			
+
 		}
 	}
-
-
-
-	
-
-	
 
 }
