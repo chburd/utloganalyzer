@@ -18,6 +18,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import tb.tartifouette.MapUtils;
 import tb.tartifouette.utlog.keys.UserMap;
 import tb.tartifouette.utlog.keys.WeaponPerKiller;
@@ -31,6 +34,7 @@ public class Analyzer {
 
 	private static final String EOL = "\n";
 	private static final String ENVIRONMENT = "<non-client>";
+	private static final Log log = LogFactory.getLog(Analyzer.class);;
 
 	private String destDirectory;
 	private String fileName;
@@ -81,7 +85,7 @@ public class Analyzer {
 		FileInputStream fileInputStream = null;
 		GZIPInputStream gzis = null;
 		try {
-			System.out.println("Reading file " + fileToAnalyze);
+			log.info("Reading file " + fileToAnalyze);
 			fileInputStream = new FileInputStream(fileToAnalyze);
 			if (fileToAnalyze.getName().endsWith(".gz")) {
 				gzis = new GZIPInputStream(fileInputStream);
@@ -202,15 +206,14 @@ public class Analyzer {
 			String killed = matcher.group(3);
 			killed = AliasManager.getInstance().resolveUserName(killed);
 			String weapon = matcher.group(4);
-			if(!MOD_CHANGE_TEAM.equals(weapon)){
-				if(killer.equals(killed)){
+			if (!MOD_CHANGE_TEAM.equals(weapon)) {
+				if (killer.equals(killed)) {
 					Stats.updateSuicide(killer);
-				}
-				else if(Context.getInstance().areUsersSameTeam(killer, killed)){
+				} else if (Context.getInstance().areUsersSameTeam(killer,
+						killed)) {
 					Stats.updateTeamKiller(killer);
 					Stats.updateTeamKilled(killed);
-				}
-				else{
+				} else {
 					Stats.updateWhoKilledWhoWithWhat(killer, killed, weapon);
 
 					Stats.updateWhoKilledWho(killer, killed);
@@ -220,13 +223,14 @@ public class Analyzer {
 				}
 				if (ENVIRONMENT.equals(killer)) {
 					Stats.updateEnvironmentKill(killed);
-				}		
+				}
 			}
 		}
 	}
 
 	public void generateReport() throws IOException {
-		System.out.println(AliasManager.getInstance().getPossibleAliases());
+		log.info("Possible aliases : "
+				+ AliasManager.getInstance().getPossibleAliases());
 		File f = new File(destDirectory);
 		f.mkdirs();
 		generateStats();
@@ -244,8 +248,7 @@ public class Analyzer {
 	private void generateWeaponStats() throws IOException {
 		Writer writer = null;
 		try {
-			System.out.println("Writing report file " + destDirectory
-					+ "/weapons.csv");
+			log.info("Writing report file " + destDirectory + "/weapons.csv");
 			writer = new FileWriter(destDirectory + "/weapons.csv");
 			writer.write("User;Arme;nb kills" + EOL);
 			Map<WeaponPerKiller, Integer> weapons = MapUtils
@@ -265,7 +268,7 @@ public class Analyzer {
 	private void generateUserDetailedStats() throws IOException {
 		Writer writer = null;
 		try {
-			System.out.println("Writing report file " + destDirectory
+			log.info("Writing report file " + destDirectory
 					+ "/users-details.csv");
 			writer = new FileWriter(destDirectory + "/users-details.csv");
 			writer.write("User;Ennemi;Arme;nb kills" + EOL);
@@ -286,8 +289,7 @@ public class Analyzer {
 	private void generateUserStats() throws IOException {
 		Writer writer = null;
 		try {
-			System.out.println("Writing report file " + destDirectory
-					+ "/users.csv");
+			log.info("Writing report file " + destDirectory + "/users.csv");
 			writer = new FileWriter(destDirectory + "/users.csv");
 			writer.write("User 1 ;User 2;user 1 kill user 2;user 2 kill user 1"
 					+ EOL);
@@ -309,8 +311,7 @@ public class Analyzer {
 	private void generateScorePerMapStats() throws IOException {
 		Writer writer = null;
 		try {
-			System.out.println("Writing report file " + destDirectory
-					+ "/scores-map.csv");
+			log.info("Writing report file " + destDirectory + "/scores-map.csv");
 			writer = new FileWriter(destDirectory + "/scores-map.csv");
 			writer.write("User;Map;score cumule;parties jouees;nb frags;nb morts;nb suicides;"
 					+ "tue par le decor;drapeaux ramenes;ingrat(tue ses coequipiers);mal aime(tue par ses coequipiers);"
@@ -343,8 +344,7 @@ public class Analyzer {
 	private void generateScoreStats() throws IOException {
 		Writer writer = null;
 		try {
-			System.out.println("Writing report file " + destDirectory
-					+ "/scores.csv");
+			log.info("Writing report file " + destDirectory + "/scores.csv");
 			writer = new FileWriter(destDirectory + "/scores.csv");
 			writer.write("User;score cumule;parties jouees;nb frags;nb morts;nb suicides;tue par le decor;"
 					+ "drapeaux ramenes;ingrat(tue ses coequipiers);mal aime(tue par ses coequipiers);score/partie;"
@@ -375,8 +375,7 @@ public class Analyzer {
 	private void generateMapStats() throws IOException {
 		Writer writer = null;
 		try {
-			System.out.println("Writing report file " + destDirectory
-					+ "/maps.csv");
+			log.info("Writing report file " + destDirectory + "/maps.csv");
 			writer = new FileWriter(destDirectory + "/maps.csv");
 			writer.write("Map;drapeaux bleus;drapeaux rouges;%victoires bleues"
 					+ EOL);
