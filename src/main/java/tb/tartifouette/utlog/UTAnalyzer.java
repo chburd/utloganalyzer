@@ -7,7 +7,7 @@ public class UTAnalyzer {
             String fileName = System.getProperty("file");
             String dirName = System.getProperty("dir");
             if ((fileName != null && dirName != null) || (fileName == null && dirName == null)) {
-                System.err.println("Usage -file=xx ou -dir=xxx");
+                System.err.println("Usage -Dfile=xx ou -Ddir=xxx");
             }
             String destFile = args[0];
             Analyzer analyzer = new Analyzer(destFile);
@@ -18,7 +18,6 @@ public class UTAnalyzer {
                 analyzer.setFileName(fileName);
             }
             analyzer.analyze();
-            analyzer.generateReport();
 
         } catch (Exception e) {
             e.printStackTrace();
