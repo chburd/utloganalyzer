@@ -7,9 +7,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.commons.io.IOUtils;
@@ -18,9 +23,12 @@ import org.apache.commons.logging.LogFactory;
 
 public class Analyzer {
 
+	private static final SimpleDateFormat YMD_DATE_PARSER = new SimpleDateFormat(
+			"yyyy-MM-dd");
+
 	private static final Log log = LogFactory.getLog(Analyzer.class);;
 
-	private String destDirectory;
+	private final String destDirectory;
 	private String fileName;
 	private String dirName;
 
@@ -65,12 +73,13 @@ public class Analyzer {
 	}
 
 	protected void analyzeFile(Stats stats, File fileToAnalyze)
-			throws FileNotFoundException, IOException {
+			throws FileNotFoundException, IOException, ParseException {
 
 		BufferedReader reader = null;
 		Reader isReader = null;
 		FileInputStream fileInputStream = null;
 		GZIPInputStream gzis = null;
+		Date fileDate = extractFileDateFromFileName(fileToAnalyze.getPath());
 		try {
 			log.info("Reading file " + fileToAnalyze);
 			fileInputStream = new FileInputStream(fileToAnalyze);
@@ -95,6 +104,19 @@ public class Analyzer {
 			IOUtils.closeQuietly(fileInputStream);
 
 		}
+	}
+
+	private static final Pattern DATE = Pattern.compile(".*(\\d+-\\d+-\\d+).*");
+
+	private Date extractFileDateFromFileName(String path) throws ParseException {
+		Matcher matcher = DATE.matcher(path);
+		Date date = null;
+		if (matcher.matches()) {
+			String dateS = matcher.group(1);
+			date = YMD_DATE_PARSER.parse(dateS);
+			log.info("File " + path + " ==> " + dateS);
+		}
+		return date;
 	}
 
 }
