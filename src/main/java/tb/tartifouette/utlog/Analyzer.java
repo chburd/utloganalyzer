@@ -24,7 +24,7 @@ import org.apache.commons.logging.LogFactory;
 public class Analyzer {
 
 	private static final SimpleDateFormat YMD_DATE_PARSER = new SimpleDateFormat(
-			"yyyy-MM-dd");
+			"yyyy_MM_dd");
 
 	private static final Log log = LogFactory.getLog(Analyzer.class);;
 
@@ -106,7 +106,7 @@ public class Analyzer {
 		}
 	}
 
-	private static final Pattern DATE = Pattern.compile(".*(\\d+-\\d+-\\d+).*");
+	private static final Pattern DATE = Pattern.compile(".*(\\d{4}_\\d{2}_\\d{2}).*");
 
 	private Date extractFileDateFromFileName(String path) throws ParseException {
 		Matcher matcher = DATE.matcher(path);
