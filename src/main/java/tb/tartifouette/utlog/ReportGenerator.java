@@ -181,11 +181,11 @@ public class ReportGenerator {
 			for (Entry<String, MapResult> map : maps.entrySet()) {
 				MapResult result = map.getValue();
 				String ratio = "N/A";
-				int totalPlays = result.flagBlue + result.getFlagRed();
+				int totalPlays = result.getFlagBlue() + result.getFlagRed();
 				if (totalPlays > 0) {
 					ratio = String.valueOf(100 * result.computeRatio());
 				}
-				writer.write(map.getKey() + ";" + result.flagBlue + ";"
+				writer.write(map.getKey() + ";" + result.getFlagBlue() + ";"
 						+ result.getFlagRed() + ";" + ratio + EOL);
 			}
 		} finally {

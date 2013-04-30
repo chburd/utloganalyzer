@@ -17,6 +17,18 @@ public class UserScore implements Comparable<UserScore> {
 		return totalScore - o.totalScore;
 	}
 
+	public void add(UserScore value) {
+		nbPlays += value.nbPlays;
+		totalScore += value.totalScore;
+		totalFrags += value.totalFrags;
+		totalDeaths += value.totalDeaths;
+		totalSuicides += value.totalSuicides;
+		totalEnvironment += value.totalEnvironment;
+		flags += value.flags;
+		teamKiller += value.teamKiller;
+		teamKilled += value.teamKilled;
+	}
+
 	public String computeScorePerPlay() {
 		double result = 0;
 		if (nbPlays != 0) {

@@ -2,7 +2,7 @@ package tb.tartifouette.utlog.values;
 
 public class MapResult implements Comparable<MapResult> {
 	private int flagRed;
-	public int flagBlue;
+	private int flagBlue;
 
 	@Override
 	public int compareTo(MapResult o) {
@@ -24,6 +24,14 @@ public class MapResult implements Comparable<MapResult> {
 
 	public void setFlagRed(int flagRed) {
 		this.flagRed = flagRed;
+	}
+
+	public int getFlagBlue() {
+		return flagBlue;
+	}
+
+	public void setFlagBlue(int flagBlue) {
+		this.flagBlue = flagBlue;
 	}
 
 }

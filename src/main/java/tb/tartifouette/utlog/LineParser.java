@@ -116,7 +116,7 @@ public class LineParser {
 					stats.updateWhoKilledWho(killer, killed);
 					stats.updateWhoKilled(killer);
 					stats.updateWhoIsKilled(killed);
-					stats.updateWheaponPerKiller(killer, weapon);
+					stats.updateWeaponPerKiller(killer, weapon);
 				}
 				if (ENVIRONMENT.equals(killer)) {
 					stats.updateEnvironmentKill(killed);
