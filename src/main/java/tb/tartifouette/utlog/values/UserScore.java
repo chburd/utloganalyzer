@@ -11,6 +11,8 @@ public class UserScore implements Comparable<UserScore> {
 	private int flags;
 	private int teamKiller;
 	private int teamKilled;
+	private int bestFragSerie;
+	private int worseKillSerie;
 
 	@Override
 	public int compareTo(UserScore o) {
@@ -27,6 +29,12 @@ public class UserScore implements Comparable<UserScore> {
 		flags += value.flags;
 		teamKiller += value.teamKiller;
 		teamKilled += value.teamKilled;
+		if (bestFragSerie < value.bestFragSerie) {
+			bestFragSerie = value.bestFragSerie;
+		}
+		if (worseKillSerie > value.worseKillSerie) {
+			worseKillSerie = value.worseKillSerie;
+		}
 	}
 
 	public String computeScorePerPlay() {
@@ -131,6 +139,22 @@ public class UserScore implements Comparable<UserScore> {
 
 	public void setTeamKilled(int teamKilled) {
 		this.teamKilled = teamKilled;
+	}
+
+	public int getBestFragSerie() {
+		return bestFragSerie;
+	}
+
+	public void setBestFragSerie(int bestFragSerie) {
+		this.bestFragSerie = bestFragSerie;
+	}
+
+	public int getWorseKillSerie() {
+		return worseKillSerie;
+	}
+
+	public void setWorseKillSerie(int worseKillSerie) {
+		this.worseKillSerie = worseKillSerie;
 	}
 
 }

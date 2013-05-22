@@ -46,6 +46,7 @@ public class LineParser {
 		Matcher matcher = MAP_NAME.matcher(line);
 		if (matcher.matches()) {
 			Context.getInstance().setCurrentMap(matcher.group(1));
+			stats.resetSeriesStats();
 		}
 
 	}
@@ -106,10 +107,12 @@ public class LineParser {
 			if (!MOD_CHANGE_TEAM.equals(weapon)) {
 				if (killer.equals(killed)) {
 					stats.updateSuicide(killer);
+					stats.updateKillSerie(killer);
 				} else if (Context.getInstance().areUsersSameTeam(killer,
 						killed)) {
 					stats.updateTeamKiller(killer);
 					stats.updateTeamKilled(killed);
+					stats.updateKillSerie(killed);
 				} else {
 					stats.updateWhoKilledWhoWithWhat(killer, killed, weapon);
 
@@ -117,9 +120,12 @@ public class LineParser {
 					stats.updateWhoKilled(killer);
 					stats.updateWhoIsKilled(killed);
 					stats.updateWeaponPerKiller(killer, weapon);
+					stats.updateFragSerie(killer);
+					stats.updateKillSerie(killed);
 				}
 				if (ENVIRONMENT.equals(killer)) {
 					stats.updateEnvironmentKill(killed);
+					stats.updateKillSerie(killed);
 				}
 			}
 		}

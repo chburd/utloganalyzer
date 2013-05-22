@@ -116,7 +116,7 @@ public class ReportGenerator {
 			writer = new FileWriter(destDirectory + "/scores-map.csv");
 			writer.write("User;Map;score cumule;parties jouees;nb frags;nb morts;nb suicides;"
 					+ "tue par le decor;drapeaux ramenes;ingrat(tue ses coequipiers);mal aime(tue par ses coequipiers);"
-					+ "score/partie;frags/partie;drapeaux/partie;frag/mort"
+					+ "score/partie;frags/partie;drapeaux/partie;frag/mort;best frag serie;worst kill serie"
 					+ EOL);
 			Map<UserMap, UserScore> users = MapUtils.sortByValue(stats
 					.getStatsUserMapScore());
@@ -133,7 +133,9 @@ public class ReportGenerator {
 						+ value.computeScorePerPlay() + ";"
 						+ value.computeFragPerPlay() + ";"
 						+ value.computeFlagPerPlay() + ";"
-						+ value.computeFragPerDeathRatio() + EOL);
+						+ value.computeFragPerDeathRatio() + ";"
+						+ value.getBestFragSerie() + ";"
+						+ (-value.getWorseKillSerie()) + EOL);
 			}
 		} finally {
 			IOUtils.closeQuietly(writer);
@@ -147,7 +149,8 @@ public class ReportGenerator {
 			writer = new FileWriter(destDirectory + "/scores.csv");
 			writer.write("User;score cumule;parties jouees;nb frags;nb morts;nb suicides;tue par le decor;"
 					+ "drapeaux ramenes;ingrat(tue ses coequipiers);mal aime(tue par ses coequipiers);score/partie;"
-					+ "frags/partie;drapeaux/partie;frag/mort" + EOL);
+					+ "frags/partie;drapeaux/partie;frag/mort;best frag serie;worst kill serie"
+					+ EOL);
 			Map<String, UserScore> users = MapUtils.sortByValue(stats
 					.getStatsUserScore());
 			for (Entry<String, UserScore> user : users.entrySet()) {
@@ -162,7 +165,9 @@ public class ReportGenerator {
 						+ value.computeScorePerPlay() + ";"
 						+ value.computeFragPerPlay() + ";"
 						+ value.computeFlagPerPlay() + ";"
-						+ value.computeFragPerDeathRatio() + EOL);
+						+ value.computeFragPerDeathRatio() + ";"
+						+ value.getBestFragSerie() + ";"
+						+ (-value.getWorseKillSerie()) + EOL);
 			}
 		} finally {
 			IOUtils.closeQuietly(writer);

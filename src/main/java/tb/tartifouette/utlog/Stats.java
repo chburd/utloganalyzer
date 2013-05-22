@@ -27,27 +27,31 @@ public class Stats {
 
 	private final Map<UserMap, UserScore> statsUserMapScore = new HashMap<UserMap, UserScore>();
 
+	private final Map<String, Integer> series = new HashMap<String, Integer>();
+
 	public void updateEnvironmentKill(String user) {
 
 		UserMap userMap = new UserMap(user, Context.getInstance()
 				.getCurrentMap());
+		UserScore existingScore = getOrInitExistingScore(userMap);
+		existingScore
+				.setTotalEnvironment(existingScore.getTotalEnvironment() + 1);
+		statsUserMapScore.put(userMap, existingScore);
+	}
+
+	private UserScore getOrInitExistingScore(UserMap userMap) {
 		UserScore existingScore = statsUserMapScore.get(userMap);
 		if (existingScore == null) {
 			existingScore = new UserScore();
 		}
-		existingScore
-				.setTotalEnvironment(existingScore.getTotalEnvironment() + 1);
-		statsUserMapScore.put(userMap, existingScore);
+		return existingScore;
 	}
 
 	public void updateSuicide(String user) {
 
 		UserMap userMap = new UserMap(user, Context.getInstance()
 				.getCurrentMap());
-		UserScore existingScore = statsUserMapScore.get(userMap);
-		if (existingScore == null) {
-			existingScore = new UserScore();
-		}
+		UserScore existingScore = getOrInitExistingScore(userMap);
 		existingScore.setTotalSuicides(existingScore.getTotalSuicides() + 1);
 		statsUserMapScore.put(userMap, existingScore);
 	}
@@ -56,10 +60,7 @@ public class Stats {
 
 		UserMap userMap = new UserMap(user, Context.getInstance()
 				.getCurrentMap());
-		UserScore existingScore = statsUserMapScore.get(userMap);
-		if (existingScore == null) {
-			existingScore = new UserScore();
-		}
+		UserScore existingScore = getOrInitExistingScore(userMap);
 		existingScore.setTotalScore(existingScore.getTotalScore() + score);
 		existingScore.setNbPlays(existingScore.getNbPlays() + 1);
 		statsUserMapScore.put(userMap, existingScore);
@@ -86,10 +87,7 @@ public class Stats {
 	public void updateTeamKiller(String user) {
 		UserMap userMap = new UserMap(user, Context.getInstance()
 				.getCurrentMap());
-		UserScore existingScore = statsUserMapScore.get(userMap);
-		if (existingScore == null) {
-			existingScore = new UserScore();
-		}
+		UserScore existingScore = getOrInitExistingScore(userMap);
 		existingScore.setTeamKiller(existingScore.getTeamKiller() + 1);
 		statsUserMapScore.put(userMap, existingScore);
 	}
@@ -98,10 +96,7 @@ public class Stats {
 
 		UserMap userMap = new UserMap(user, Context.getInstance()
 				.getCurrentMap());
-		UserScore existingScore = statsUserMapScore.get(userMap);
-		if (existingScore == null) {
-			existingScore = new UserScore();
-		}
+		UserScore existingScore = getOrInitExistingScore(userMap);
 		existingScore.setTeamKilled(existingScore.getTeamKilled() + 1);
 		statsUserMapScore.put(userMap, existingScore);
 	}
@@ -110,10 +105,7 @@ public class Stats {
 
 		UserMap userMap = new UserMap(user, Context.getInstance()
 				.getCurrentMap());
-		UserScore existingScore = statsUserMapScore.get(userMap);
-		if (existingScore == null) {
-			existingScore = new UserScore();
-		}
+		UserScore existingScore = getOrInitExistingScore(userMap);
 		existingScore.setFlags(existingScore.getFlags() + 1);
 		statsUserMapScore.put(userMap, existingScore);
 	}
@@ -122,10 +114,7 @@ public class Stats {
 
 		UserMap userMap = new UserMap(user, Context.getInstance()
 				.getCurrentMap());
-		UserScore existingScore = statsUserMapScore.get(userMap);
-		if (existingScore == null) {
-			existingScore = new UserScore();
-		}
+		UserScore existingScore = getOrInitExistingScore(userMap);
 		existingScore.setTotalDeaths(existingScore.getTotalDeaths() + 1);
 		statsUserMapScore.put(userMap, existingScore);
 
@@ -135,10 +124,7 @@ public class Stats {
 
 		UserMap userMap = new UserMap(user, Context.getInstance()
 				.getCurrentMap());
-		UserScore existingScore = statsUserMapScore.get(userMap);
-		if (existingScore == null) {
-			existingScore = new UserScore();
-		}
+		UserScore existingScore = getOrInitExistingScore(userMap);
 		existingScore.setTotalFrags(existingScore.getTotalFrags() + 1);
 		statsUserMapScore.put(userMap, existingScore);
 	}
@@ -224,6 +210,43 @@ public class Stats {
 
 	public Map<WhoKilledWhoWithWhat, Integer> getStatsKills1() {
 		return statsKills1;
+	}
+
+	public void updateKillSerie(String user) {
+		UserMap userMap = new UserMap(user, Context.getInstance()
+				.getCurrentMap());
+		UserScore existingScore = getOrInitExistingScore(userMap);
+
+		Integer currentSerie = series.get(user);
+		if (currentSerie == null || currentSerie > 0) {
+			currentSerie = 0;
+		}
+		currentSerie--;
+		series.put(user, currentSerie);
+		if (currentSerie < existingScore.getWorseKillSerie()) {
+			existingScore.setWorseKillSerie(currentSerie);
+		}
+
+	}
+
+	public void updateFragSerie(String user) {
+		UserMap userMap = new UserMap(user, Context.getInstance()
+				.getCurrentMap());
+		UserScore existingScore = getOrInitExistingScore(userMap);
+
+		Integer currentSerie = series.get(user);
+		if (currentSerie == null || currentSerie < 0) {
+			currentSerie = 0;
+		}
+		currentSerie++;
+		series.put(user, currentSerie);
+		if (currentSerie > existingScore.getBestFragSerie()) {
+			existingScore.setBestFragSerie(currentSerie);
+		}
+	}
+
+	public void resetSeriesStats() {
+		series.clear();
 	}
 
 }
