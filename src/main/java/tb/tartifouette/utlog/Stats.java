@@ -56,7 +56,7 @@ public class Stats {
         statsUserMapScore.put(userMap, existingScore);
     }
 
-    public void updateUserScore(String user, int score) {
+    public void updateUserScore(String user, int score, int time) {
 
         UserMap userMap = new UserMap(user, Context.getInstance().getCurrentMap());
         UserScore existingScore = getOrInitExistingScore(userMap);
@@ -64,10 +64,9 @@ public class Stats {
         existingScore.setNbPlays(existingScore.getNbPlays() + 1);
         statsUserMapScore.put(userMap, existingScore);
 
-        finishSerie(user);
+        finishSerie(user, time);
 
     }
-
 
     public void updateTeamFlag(String team) {
         MapResult result = statsTeamFlag.get(Context.getInstance().getCurrentMap());
@@ -237,7 +236,6 @@ public class Stats {
         }
         currentSerie.decreaseCount();
 
-
         if (currentSerie.getCount() < existingScore.getWorseKillSerie()) {
             existingScore.setWorseKillSerie(currentSerie.getCount());
         }
@@ -245,10 +243,26 @@ public class Stats {
 
     }
 
+    private void finishSerie(String user, int time) {
+        UserMap userMap = new UserMap(user, Context.getInstance().getCurrentMap());
+        UserScore existingScore = getOrInitExistingScore(userMap);
 
-    private void finishSerie(String user) {
-        // TODO mettre à jour les durées de série de frag/morts
-
+        Serie currentSerie = series.get(user);
+        if (currentSerie == null) {
+            currentSerie = new Serie();
+            series.put(user, currentSerie);
+        }
+        if (currentSerie.isInFragSerie()) {
+            int duration = time - currentSerie.getLastFragTime();
+            if (duration > existingScore.getBestFragSerieDurationInS()) {
+                existingScore.setBestFragSerieDurationInS(duration);
+            }
+        } else {
+            int duration = time - currentSerie.getLastKillTime();
+            if (duration > existingScore.getWorstKillSerieDurationInS()) {
+                existingScore.setWorstKillSerieDurationInS(duration);
+            }
+        }
     }
 
     public void updateFragSerie(String user, int time) {

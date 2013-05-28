@@ -106,7 +106,7 @@ public class StatsTest {
 	@Test
 	public void testUpdateUserScore() {
 		assertEmptyScores();
-		subject.updateUserScore(USER1, 12);
+		subject.updateUserScore(USER1, 12, 600);
 
 		assertEquals(1, subject.getStatsUserScore().size());
 		UserScore score = getScore(USER1);
@@ -123,7 +123,7 @@ public class StatsTest {
 
 		Context.getInstance().setCurrentMap(MAP2);
 
-		subject.updateUserScore(USER1, 20);
+		subject.updateUserScore(USER1, 20, 600);
 		assertEquals(1, subject.getStatsUserScore().size());
 		score = getScore(USER1);
 

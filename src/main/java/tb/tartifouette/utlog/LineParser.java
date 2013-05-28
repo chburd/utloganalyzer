@@ -85,13 +85,15 @@ public class LineParser {
         }
     }
 
-    private void parseStats(String line) {
+    private void parseStats(String line) throws ParseException {
         Matcher matcher = STATS_LINE.matcher(line);
         if (matcher.matches()) {
+            String timeS = matcher.group(1);
+            int time = getSecondCount(timeS);
             int score = Integer.parseInt(matcher.group(2));
             String user = matcher.group(3);
             user = AliasManager.getInstance().resolveUserName(user);
-            stats.updateUserScore(user, score);
+            stats.updateUserScore(user, score, time);
         }
     }
 
