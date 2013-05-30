@@ -11,10 +11,15 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class AliasManager {
 
-	private Map<String, String> aliasesMap;
-	private Map<String, Set<String>> possibleAlias;
+	private static final Log log = LogFactory.getLog(AliasManager.class);
+
+	private final Map<String, String> aliasesMap;
+	private final Map<String, Set<String>> possibleAlias;
 	private static final Pattern pComma = Pattern.compile(",");
 	private static AliasManager instance = new AliasManager();
 
@@ -24,24 +29,31 @@ public class AliasManager {
 		initFromConfig();
 	}
 
+	public void reinit(Properties props) {
+		log.info("Reinit from new properties");
+		aliasesMap.clear();
+		possibleAlias.clear();
+		String userNamesS = props.getProperty("aliases.mainNames");
+		List<String> userNames = getPropertyList(userNamesS);
+		for (String userName : userNames) {
+			String aliasList = props.getProperty("aliases.list." + userName);
+			if (aliasList != null) {
+				List<String> aliases = getPropertyList(aliasList);
+				for (String alias : aliases) {
+					aliasesMap.put(alias, userName);
+				}
+			}
+		}
+	}
+
 	private void initFromConfig() {
 		Properties props = new Properties();
 		try {
 			String aliasFileName = System.getProperty("alias.file");
+			log.info("Reading from file " + aliasFileName);
 			if (aliasFileName != null) {
 				props.load(new FileInputStream(aliasFileName));
-				String userNamesS = props.getProperty("aliases.mainNames");
-				List<String> userNames = getPropertyList(userNamesS);
-				for (String userName : userNames) {
-					String aliasList = props.getProperty("aliases.list."
-							+ userName);
-					if (aliasList != null) {
-						List<String> aliases = getPropertyList(aliasList);
-						for (String alias : aliases) {
-							aliasesMap.put(alias, userName);
-						}
-					}
-				}
+				reinit(props);
 			}
 
 		} catch (Exception e) {

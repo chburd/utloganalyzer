@@ -20,7 +20,7 @@ import org.apache.commons.logging.LogFactory;
 
 public class Analyzer {
 
-	private static final Log log = LogFactory.getLog(Analyzer.class);;
+	private static final Log log = LogFactory.getLog(Analyzer.class);
 
 	private final String destDirectory;
 	private String fileName;
