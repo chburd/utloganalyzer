@@ -11,12 +11,10 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 
 public class AliasManager {
-
-	private static final Log log = LogFactory.getLog(AliasManager.class);
+	private static final Logger log = Logger.getLogger(AliasManager.class);
 
 	private final Map<String, String> aliasesMap;
 	private final Map<String, Set<String>> possibleAlias;

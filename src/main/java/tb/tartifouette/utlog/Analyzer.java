@@ -15,12 +15,11 @@ import java.util.List;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 
 public class Analyzer {
 
-	private static final Log log = LogFactory.getLog(Analyzer.class);
+	private static final Logger log = Logger.getLogger(Analyzer.class);
 
 	private final String destDirectory;
 	private String fileName;
