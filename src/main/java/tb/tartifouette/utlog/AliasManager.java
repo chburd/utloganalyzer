@@ -48,8 +48,8 @@ public class AliasManager {
 		Properties props = new Properties();
 		try {
 			String aliasFileName = System.getProperty("alias.file");
-			log.info("Reading from file " + aliasFileName);
 			if (aliasFileName != null) {
+				log.info("Reading from file " + aliasFileName);
 				props.load(new FileInputStream(aliasFileName));
 				reinit(props);
 			}
