@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -73,7 +74,7 @@ public class UtLogUploadServlet extends HttpServlet {
 			// Parse the request
 			List<FileItem> items = upload.parseRequest(request);
 			List<Input> inputs = getInputFromPostedFiles(items);
-			AliasManager aliasManager = getAliasManager(items);
+			AliasManager aliasManager = getAliasManager(items, request);
 			LogAnalyzer analyzer = new LogAnalyzer(inputs, aliasManager);
 			Stats stats = analyzer.analyze();
 			String date = analyzer.getDateHint();
@@ -99,17 +100,41 @@ public class UtLogUploadServlet extends HttpServlet {
 
 	}
 
-	private AliasManager getAliasManager(List<FileItem> items)
-			throws IOException {
+	private AliasManager getAliasManager(List<FileItem> items,
+			HttpServletRequest request) throws IOException {
 		AliasManager mgr = new AliasManager();
+		Properties props = new Properties();
 		for (FileItem fileItem : items) {
 			if ("alias.file".equals(fileItem.getFieldName())) {
-				Properties props = new Properties();
-				props.load(fileItem.getInputStream());
-				mgr.init(props);
+				if (fileItem.getSize() > 0) {
+					log.info("Loading alias.properties from uploaded file "
+							+ fileItem.getName());
+					props.load(fileItem.getInputStream());
+				}
+			} else if ("alias.url".equals(fileItem.getFieldName())) {
+				String aliasUrl = fileItem.getString();
+				if (aliasUrl != null) {
+					props.putAll(tryToLoadAliasesFromUrl(aliasUrl));
+				}
 			}
 		}
+		mgr.init(props);
 		return mgr;
+	}
+
+	private Properties tryToLoadAliasesFromUrl(String aliasUrl)
+			throws IOException {
+		Properties props = new Properties();
+		InputStream is = null;
+		log.info("Loading alias.properties from URL " + aliasUrl);
+		try {
+			URL url = new URL(aliasUrl);
+			is = url.openStream();
+			props.load(is);
+		} finally {
+			IOUtils.closeQuietly(is);
+		}
+		return props;
 	}
 
 	private List<Input> getInputFromPostedFiles(List<FileItem> items)

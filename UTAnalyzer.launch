@@ -2,15 +2,13 @@
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
 <stringAttribute key="bad_container_name" value="/utloganalyze"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/utloganalyzer/src/tb/tartifouette/utlog/UTAnalyzer.java"/>
+<listEntry value="/UtLogWeb"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
-<listEntry value="1"/>
+<listEntry value="4"/>
 </listAttribute>
-<stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.eclipse.m2e.launchconfig.classpathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="tb.tartifouette.utlog.UTAnalyzer"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="report"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="utloganalyzer"/>
-<stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.m2e.launchconfig.sourcepathProvider"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="UtLogWeb"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Ddir=logs -Dalias.file=src/main/config/alias.properties"/>
 </launchConfiguration>

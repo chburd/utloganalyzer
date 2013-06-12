@@ -10,6 +10,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 public class AliasManager {
@@ -29,13 +30,16 @@ public class AliasManager {
 		aliasesMap.clear();
 		possibleAlias.clear();
 		String userNamesS = props.getProperty("aliases.mainNames");
-		List<String> userNames = getPropertyList(userNamesS);
-		for (String userName : userNames) {
-			String aliasList = props.getProperty("aliases.list." + userName);
-			if (aliasList != null) {
-				List<String> aliases = getPropertyList(aliasList);
-				for (String alias : aliases) {
-					aliasesMap.put(alias, userName);
+		if (StringUtils.isNotBlank(userNamesS)) {
+			List<String> userNames = getPropertyList(userNamesS);
+			for (String userName : userNames) {
+				String aliasList = props
+						.getProperty("aliases.list." + userName);
+				if (aliasList != null) {
+					List<String> aliases = getPropertyList(aliasList);
+					for (String alias : aliases) {
+						aliasesMap.put(alias, userName);
+					}
 				}
 			}
 		}

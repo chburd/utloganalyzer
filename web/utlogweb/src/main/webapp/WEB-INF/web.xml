@@ -24,10 +24,6 @@
 
 	<servlet-mapping>
 		<servlet-name>tb.tartifouette.web.servlet.UtLogUploadServlet</servlet-name>
-		<url-pattern>/</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>tb.tartifouette.web.servlet.UtLogUploadServlet</servlet-name>
-		<url-pattern>/UtLogUploadServlet</url-pattern>
+		<url-pattern>/FileUpload</url-pattern>
 	</servlet-mapping>
 </web-app>

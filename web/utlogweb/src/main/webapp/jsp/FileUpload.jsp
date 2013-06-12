@@ -11,11 +11,11 @@
 	Provide a single log file, or a zip archive containing several clog
 	files
 	<form action="<%=request.getContextPath()%>
-		/UtLogUploadServlet"
+		/FileUpload"
 		method="post" enctype="multipart/form-data">
 		File (or zip archive) to analyze
 		<input type="file" name="logfile" size="20" /> <br /> 
-		(optional) alias file (cf sample here (TODO))
+		(optional) alias file (cf sample <a href="resources/alias.properties.sample">here</a>)
 		<input type="file" name="alias.file" size="20" /> <br /> 
 		(optional) or url to an alias file
 		<input type="text" name="alias.url" size="20" /> <br /> 
