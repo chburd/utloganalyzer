@@ -1,11 +1,10 @@
 <project>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>tb.tartifouette</groupId>
-	<artifactId>utloganalyzer</artifactId>
+	<artifactId>web</artifactId>
 	<version>1</version>
 	<packaging>pom</packaging>
 	<modules>
-		<module>common</module>
-		<module>web</module>
+		<module>utlogweb</module>
 	</modules>
 </project>
