@@ -21,5 +21,13 @@
 		<input type="text" name="alias.url" size="20" /> <br /> 
 		<input type="submit" value="Upload File" />
 	</form>
+	<br/>
+	<br/>
+	<br/>
+	<br/>
+	<br/>
+	Copyright 2013 - chburd
+	<br/>
+	project info : <a href="https://github.com/chburd/utloganalyzer">https://github.com/chburd/utloganalyzer</a>
 </body>
 </html>
