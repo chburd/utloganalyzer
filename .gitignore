@@ -1,16 +1,11 @@
 *.class
 
-# Package Files #
 *.jar
 *.war
-*.ear
-
-# Alias file must not be committed
-alias.properties
-
-# Log and reports files must not be committed
+.DS_Store
+target
+.settings
+.classpath
+.project
 *.log
 *.csv
-/target
-.settings/org.eclipse.jdt.core.prefs
-.settings/org.eclipse.m2e.core.prefs
