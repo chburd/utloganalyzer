@@ -34,9 +34,8 @@ public class ReportGenerator {
 		this.stats = stats;
 	}
 
-	public void generateReport() throws IOException {
-		log.info("Possible aliases : "
-				+ AliasManager.getInstance().getPossibleAliases());
+	public void generateReport(AliasManager aliasManager) throws IOException {
+		log.info("Possible aliases : " + aliasManager.getPossibleAliases());
 		File f = new File(destDirectory);
 		f.mkdirs();
 		generateStats();

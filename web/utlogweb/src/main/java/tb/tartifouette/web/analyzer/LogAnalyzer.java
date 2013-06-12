@@ -19,6 +19,7 @@ import java.util.zip.GZIPInputStream;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
+import tb.tartifouette.utlog.AliasManager;
 import tb.tartifouette.utlog.LineParser;
 import tb.tartifouette.utlog.Stats;
 
@@ -30,13 +31,16 @@ public class LogAnalyzer {
 
 	private final List<String> dates;
 
+	private final AliasManager aliasManager;
+
 	private static final SimpleDateFormat YMD_DATE_PARSER = new SimpleDateFormat(
 			"yyyy_MM_dd");
 	private static final SimpleDateFormat YMD_DASH_PARSER = new SimpleDateFormat(
 			"yyyy-MM-dd");
 
-	public LogAnalyzer(List<Input> items) {
+	public LogAnalyzer(List<Input> items, AliasManager aliasManager) {
 		this.items = items;
+		this.aliasManager = aliasManager;
 		dates = new ArrayList<String>();
 	}
 
@@ -69,7 +73,7 @@ public class LogAnalyzer {
 			}
 			String line = reader.readLine();
 			for (; line != null; line = reader.readLine()) {
-				LineParser lineParser = new LineParser(stats);
+				LineParser lineParser = new LineParser(stats, aliasManager);
 				lineParser.parseLine(line);
 			}
 

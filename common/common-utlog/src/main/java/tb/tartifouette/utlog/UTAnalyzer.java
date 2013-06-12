@@ -11,7 +11,8 @@ public class UTAnalyzer {
 				System.err.println("Usage -Dfile=xx ou -Ddir=xxx");
 			}
 			String destFile = args[0];
-			Analyzer analyzer = new Analyzer(destFile);
+			AliasManager mgr = new AliasManager();
+			Analyzer analyzer = new Analyzer(destFile, mgr);
 			if (dirName != null) {
 				analyzer.setDirName(dirName);
 			}
@@ -25,5 +26,4 @@ public class UTAnalyzer {
 			System.exit(1);
 		}
 	}
-
 }

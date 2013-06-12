@@ -1,6 +1,5 @@
 package tb.tartifouette.utlog;
 
-import java.io.FileInputStream;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -19,16 +18,14 @@ public class AliasManager {
 	private final Map<String, String> aliasesMap;
 	private final Map<String, Set<String>> possibleAlias;
 	private static final Pattern pComma = Pattern.compile(",");
-	private static AliasManager instance = new AliasManager();
 
-	private AliasManager() {
+	public AliasManager() {
 		aliasesMap = new HashMap<String, String>();
 		possibleAlias = new HashMap<String, Set<String>>();
-		initFromConfig();
 	}
 
-	public void reinit(Properties props) {
-		log.info("Reinit from new properties");
+	public void init(Properties props) {
+		log.info("Init from properties");
 		aliasesMap.clear();
 		possibleAlias.clear();
 		String userNamesS = props.getProperty("aliases.mainNames");
@@ -44,30 +41,9 @@ public class AliasManager {
 		}
 	}
 
-	private void initFromConfig() {
-		Properties props = new Properties();
-		try {
-			String aliasFileName = System.getProperty("alias.file");
-			if (aliasFileName != null) {
-				log.info("Reading from file " + aliasFileName);
-				props.load(new FileInputStream(aliasFileName));
-				reinit(props);
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new IllegalStateException(e);
-		}
-
-	}
-
 	private List<String> getPropertyList(String userNamesS) {
 		String[] userNames = pComma.split(userNamesS);
 		return Arrays.asList(userNames);
-	}
-
-	public static AliasManager getInstance() {
-		return instance;
 	}
 
 	public String resolveUserName(String alias) {

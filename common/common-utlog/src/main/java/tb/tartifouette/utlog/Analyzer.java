@@ -25,8 +25,10 @@ public class Analyzer {
 	private String fileName;
 	private String dirName;
 
-	public Analyzer(String destDirectory) {
+	private final AliasManager aliasManager;
 
+	public Analyzer(String destDirectory, AliasManager aliasManager) {
+		this.aliasManager = aliasManager;
 		this.destDirectory = destDirectory;
 	}
 
@@ -44,7 +46,7 @@ public class Analyzer {
 			}
 		}
 		ReportGenerator generator = new ReportGenerator(stats, destDirectory);
-		generator.generateReport();
+		generator.generateReport(aliasManager);
 	}
 
 	private List<File> getFilesToAnaylyze() {
@@ -89,7 +91,7 @@ public class Analyzer {
 			}
 			String line = reader.readLine();
 			for (; line != null; line = reader.readLine()) {
-				LineParser lineParser = new LineParser(stats);
+				LineParser lineParser = new LineParser(stats, aliasManager);
 				lineParser.parseLine(line);
 			}
 

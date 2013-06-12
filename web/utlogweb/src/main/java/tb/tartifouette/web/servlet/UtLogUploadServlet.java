@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -22,6 +23,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
+import tb.tartifouette.utlog.AliasManager;
 import tb.tartifouette.utlog.Stats;
 import tb.tartifouette.web.analyzer.Input;
 import tb.tartifouette.web.analyzer.LogAnalyzer;
@@ -71,11 +73,12 @@ public class UtLogUploadServlet extends HttpServlet {
 			// Parse the request
 			List<FileItem> items = upload.parseRequest(request);
 			List<Input> inputs = getInputFromPostedFiles(items);
-			LogAnalyzer analyzer = new LogAnalyzer(inputs);
+			AliasManager aliasManager = getAliasManager(items);
+			LogAnalyzer analyzer = new LogAnalyzer(inputs, aliasManager);
 			Stats stats = analyzer.analyze();
 			String date = analyzer.getDateHint();
 			ReportGenerator generator = new ReportGenerator(stats);
-			generator.generateReport();
+			generator.generateReport(aliasManager);
 			byte[] content = generator.getBaos().toByteArray();
 
 			response.setContentType("application/zip");
@@ -96,14 +99,29 @@ public class UtLogUploadServlet extends HttpServlet {
 
 	}
 
+	private AliasManager getAliasManager(List<FileItem> items)
+			throws IOException {
+		AliasManager mgr = new AliasManager();
+		for (FileItem fileItem : items) {
+			if ("alias.file".equals(fileItem.getFieldName())) {
+				Properties props = new Properties();
+				props.load(fileItem.getInputStream());
+				mgr.init(props);
+			}
+		}
+		return mgr;
+	}
+
 	private List<Input> getInputFromPostedFiles(List<FileItem> items)
 			throws IOException {
 		List<Input> inputs = new ArrayList<Input>();
 		for (FileItem item : items) {
-			if (item.getName().endsWith(".zip")) {
-				inputs.addAll(getInputsFromZipFile(item));
-			} else {
-				inputs.add(new Input(item.getName(), item.getInputStream()));
+			if ("logfile".equals(item.getFieldName())) {
+				if (item.getName().endsWith(".zip")) {
+					inputs.addAll(getInputsFromZipFile(item));
+				} else {
+					inputs.add(new Input(item.getName(), item.getInputStream()));
+				}
 			}
 		}
 
