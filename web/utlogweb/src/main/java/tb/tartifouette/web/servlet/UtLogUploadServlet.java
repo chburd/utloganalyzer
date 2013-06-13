@@ -22,6 +22,7 @@ import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import tb.tartifouette.utlog.AliasManager;
@@ -113,7 +114,7 @@ public class UtLogUploadServlet extends HttpServlet {
 				}
 			} else if ("alias.url".equals(fileItem.getFieldName())) {
 				String aliasUrl = fileItem.getString();
-				if (aliasUrl != null) {
+				if (StringUtils.trimToNull(aliasUrl) != null) {
 					props.putAll(tryToLoadAliasesFromUrl(aliasUrl));
 				}
 			}
