@@ -18,7 +18,7 @@
 		(optional) alias file (cf sample <a href="resources/alias.properties.sample">here</a>)
 		<input type="file" name="alias.file" size="20" /> <br /> 
 		(optional) or url to an alias file
-		<input type="text" name="alias.url" size="20" /> <br /> 
+		<input type="text" name="alias.url" size="20" /> <br />  		
 		<input type="submit" value="Upload File" />
 	</form>
 	<br/>

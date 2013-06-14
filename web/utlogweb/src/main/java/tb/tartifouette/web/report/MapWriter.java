@@ -1,5 +1,6 @@
 package tb.tartifouette.web.report;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -9,8 +10,8 @@ import tb.tartifouette.utlog.values.MapResult;
 
 public class MapWriter extends AbstractFileEntryWriter {
 
-	public MapWriter(Stats stats) {
-		super(stats);
+	public MapWriter(Stats stats, Locale locale) {
+		super(stats, locale);
 	}
 
 	@Override
@@ -21,8 +22,6 @@ public class MapWriter extends AbstractFileEntryWriter {
 	@Override
 	public String getContent() {
 		StringBuilder writer = new StringBuilder();
-		writer.append("Map;drapeaux bleus;drapeaux rouges;%victoires bleues")
-				.append(EOL);
 		Map<String, MapResult> maps = MapUtils.sortByValue(stats
 				.getStatsTeamFlag());
 		for (Entry<String, MapResult> map : maps.entrySet()) {
@@ -38,5 +37,15 @@ public class MapWriter extends AbstractFileEntryWriter {
 					.append(ratio).append(EOL);
 		}
 		return writer.toString();
+	}
+
+	@Override
+	public String getBaseBundleName() {
+		return "maps.stats.title";
+	}
+
+	@Override
+	public int getNbTitles() {
+		return 4;
 	}
 }

@@ -1,5 +1,6 @@
 package tb.tartifouette.web.report;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -10,8 +11,8 @@ import tb.tartifouette.utlog.values.UserScore;
 
 public class ScoresMapWriter extends AbstractFileEntryWriter {
 
-	public ScoresMapWriter(Stats stats) {
-		super(stats);
+	public ScoresMapWriter(Stats stats, Locale locale) {
+		super(stats, locale);
 	}
 
 	@Override
@@ -22,12 +23,7 @@ public class ScoresMapWriter extends AbstractFileEntryWriter {
 	@Override
 	public String getContent() {
 		StringBuilder writer = new StringBuilder();
-		writer.append(
-				"User;Map;score cumule;parties jouees;nb frags;nb morts;nb suicides;")
-				.append("tue par le decor;drapeaux ramenes;ingrat(tue ses coequipiers);mal aime(tue par ses coequipiers);")
-				.append("score/partie;frags/partie;drapeaux/partie;frag/mort;best frag serie;")
-				.append("meilleure duree invaincu(s);worst kill serie;pire duree sans marquer(s)")
-				.append(EOL);
+
 		Map<UserMap, UserScore> users = MapUtils.sortByValue(stats
 				.getStatsUserMapScore());
 		for (Entry<UserMap, UserScore> user : users.entrySet()) {
@@ -48,13 +44,20 @@ public class ScoresMapWriter extends AbstractFileEntryWriter {
 					.append(value.computeFlagPerPlay()).append(SEMI_COLUMN)
 					.append(value.computeFragPerDeathRatio())
 					.append(SEMI_COLUMN).append(value.getBestFragSerie())
-					.append(SEMI_COLUMN)
-					.append(value.getBestFragSerieDurationInS())
 					.append(SEMI_COLUMN).append((-value.getWorseKillSerie()))
-					.append(SEMI_COLUMN)
-					.append(value.getWorstKillSerieDurationInS()).append(EOL);
+					.append(SEMI_COLUMN).append(EOL);
 		}
 		return writer.toString();
 
+	}
+
+	@Override
+	public String getBaseBundleName() {
+		return "scores.map.stats.title";
+	}
+
+	@Override
+	public int getNbTitles() {
+		return 17;
 	}
 }

@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.log4j.Logger;
@@ -18,12 +19,15 @@ public class ReportGenerator {
 	private final Stats stats;
 	private final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
+	private final Locale locale;
+
 	public ByteArrayOutputStream getBaos() {
 		return baos;
 	}
 
-	public ReportGenerator(Stats stats) {
+	public ReportGenerator(Stats stats, Locale locale) {
 		this.stats = stats;
+		this.locale = locale;
 	}
 
 	public void generateReport(AliasManager mgr) throws IOException {
@@ -44,12 +48,12 @@ public class ReportGenerator {
 
 	private List<AbstractFileEntryWriter> getWriters() {
 		List<AbstractFileEntryWriter> writers = new ArrayList<AbstractFileEntryWriter>();
-		writers.add(new MapWriter(stats));
-		writers.add(new ScoresMapWriter(stats));
-		writers.add(new ScoreWriter(stats));
-		writers.add(new UsersDetailWriter(stats));
-		writers.add(new UsersWriter(stats));
-		writers.add(new WeaponWriter(stats));
+		writers.add(new MapWriter(stats, locale));
+		writers.add(new ScoresMapWriter(stats, locale));
+		writers.add(new ScoreWriter(stats, locale));
+		writers.add(new UsersDetailWriter(stats, locale));
+		writers.add(new UsersWriter(stats, locale));
+		writers.add(new WeaponWriter(stats, locale));
 		return writers;
 	}
 

@@ -2,6 +2,8 @@ package tb.tartifouette.web.report;
 
 import java.io.CharArrayWriter;
 import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -17,9 +19,13 @@ public abstract class AbstractFileEntryWriter {
 	private static final Logger log = Logger
 			.getLogger(AbstractFileEntryWriter.class);
 	protected final Stats stats;
+	protected final Locale locale;
+	protected final ResourceBundle bundle;
 
-	public AbstractFileEntryWriter(Stats stats) {
+	public AbstractFileEntryWriter(Stats stats, Locale locale) {
 		this.stats = stats;
+		this.locale = locale;
+		bundle = ResourceBundle.getBundle("Report", locale);
 	}
 
 	public void writeFileEntry(ZipOutputStream zos) throws IOException {
@@ -27,7 +33,7 @@ public abstract class AbstractFileEntryWriter {
 		ZipEntry zipEntry = new ZipEntry(getFileName());
 		try {
 			log.info("Writing report file " + getFileName());
-			String content = getContent();
+			String content = generateTitleLine(getNbTitles()) + getContent();
 			zipEntry.setSize(content.length());
 			zos.putNextEntry(zipEntry);
 			zos.write(content.getBytes());
@@ -40,4 +46,19 @@ public abstract class AbstractFileEntryWriter {
 	public abstract String getFileName();
 
 	public abstract String getContent();
+
+	public abstract String getBaseBundleName();
+
+	public abstract int getNbTitles();
+
+	public String generateTitleLine(int nbTitles) {
+		String baseBundle = getBaseBundleName();
+		StringBuilder sb = new StringBuilder();
+		for (int i = 1; i <= nbTitles; i++) {
+			sb.append(bundle.getString(baseBundle + i)).append(SEMI_COLUMN);
+		}
+		sb.append(EOL);
+		return sb.toString();
+	}
+
 }

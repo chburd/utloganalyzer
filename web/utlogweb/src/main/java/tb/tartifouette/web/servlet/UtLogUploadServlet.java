@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -66,7 +67,6 @@ public class UtLogUploadServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		try {
-
 			FileItemFactory factory = new DiskFileItemFactory();
 
 			// Create a new file upload handler
@@ -79,7 +79,8 @@ public class UtLogUploadServlet extends HttpServlet {
 			LogAnalyzer analyzer = new LogAnalyzer(inputs, aliasManager);
 			Stats stats = analyzer.analyze();
 			String date = analyzer.getDateHint();
-			ReportGenerator generator = new ReportGenerator(stats);
+			Locale locale = getLocale(items);
+			ReportGenerator generator = new ReportGenerator(stats, locale);
 			generator.generateReport(aliasManager);
 			byte[] content = generator.getBaos().toByteArray();
 
@@ -96,9 +97,16 @@ public class UtLogUploadServlet extends HttpServlet {
 			op.close();
 
 		} catch (Exception e) {
+			log.error("Error on " + getClass().getName(), e);
 			throw new IOException("error on file upload or analyze", e);
 		}
 
+	}
+
+	private Locale getLocale(List<FileItem> items) {
+		Locale locale = Locale.ENGLISH;
+		// todo get data from form
+		return locale;
 	}
 
 	private AliasManager getAliasManager(List<FileItem> items,

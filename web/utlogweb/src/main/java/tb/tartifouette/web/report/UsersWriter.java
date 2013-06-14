@@ -1,5 +1,6 @@
 package tb.tartifouette.web.report;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -10,8 +11,8 @@ import tb.tartifouette.utlog.values.UserStats;
 
 public class UsersWriter extends AbstractFileEntryWriter {
 
-	public UsersWriter(Stats stats) {
-		super(stats);
+	public UsersWriter(Stats stats, Locale locale) {
+		super(stats, locale);
 	}
 
 	@Override
@@ -22,8 +23,6 @@ public class UsersWriter extends AbstractFileEntryWriter {
 	@Override
 	public String getContent() {
 		StringBuilder writer = new StringBuilder();
-		writer.append("User 1 ;User 2;user 1 kill user 2;user 2 kill user 1")
-				.append(EOL);
 		Map<WhoKilledWho, UserStats> users = MapUtils.sortByValue(stats
 				.getStatsKills2());
 		for (Entry<WhoKilledWho, UserStats> entry : users.entrySet()) {
@@ -35,5 +34,15 @@ public class UsersWriter extends AbstractFileEntryWriter {
 					.append(value.getNbKilled() + EOL);
 		}
 		return writer.toString();
+	}
+
+	@Override
+	public String getBaseBundleName() {
+		return "user.stats.title";
+	}
+
+	@Override
+	public int getNbTitles() {
+		return 4;
 	}
 }
