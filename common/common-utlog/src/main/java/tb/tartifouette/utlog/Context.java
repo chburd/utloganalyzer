@@ -47,4 +47,10 @@ public class Context {
 
 	}
 
+	public void clear() {
+		currentMap = null;
+		userTeam.clear();
+		clientIds.clear();
+	}
+
 }

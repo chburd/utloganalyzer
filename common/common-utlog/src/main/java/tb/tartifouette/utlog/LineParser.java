@@ -55,6 +55,7 @@ public class LineParser {
 	private void parseMap(String line) {
 		Matcher matcher = MAP_NAME.matcher(line);
 		if (matcher.matches()) {
+			Context.getInstance().clear();
 			Context.getInstance().setCurrentMap(matcher.group(1));
 			stats.resetSeriesStats();
 		}
