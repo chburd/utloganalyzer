@@ -16,7 +16,7 @@ public class LineParser {
 			.compile("\\s*(\\d+:\\d+) Kill:\\s\\d+\\s\\d+\\s\\d+:\\s+(\\S+)\\skilled (\\S+) by (.*)");
 
 	private static final Pattern FLAG_LINE = Pattern
-			.compile("\\s*\\d+:\\d+ Flag:\\s(\\d+)\\s2:\\s(.*)");
+			.compile("\\s*\\d+:\\d+ Flag:\\s(\\d+)\\s(\\d+):\\s(.*)");
 
 	private static final Pattern STATS_LINE = Pattern
 			.compile("\\s*(\\d+:\\d+) score:\\s(\\d+)\\s+ping:\\s+\\d+\\s+client:\\s+\\d+\\s+(.*)");
@@ -106,9 +106,13 @@ public class LineParser {
 		if (matcher.matches()) {
 			String userId = matcher.group(1);
 			String resolvedAlias = Context.getInstance().getUsername(userId);
-			String team = matcher.group(2);
-			stats.updateTeamFlag(team);
-			stats.updateUserFlag(resolvedAlias);
+			String team = matcher.group(3);
+			String action = matcher.group(2);
+			FlagAction flagAction = FlagAction.fromValue(action);
+			if (FlagAction.FLAG_CAPTURED.equals(flagAction)) {
+				stats.updateTeamFlag(team);
+			}
+			stats.updateUserFlag(resolvedAlias, flagAction);
 		}
 	}
 

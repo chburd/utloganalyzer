@@ -126,10 +126,10 @@ public class ReportGenerator {
 						+ ";" + value.getNbPlays() + ";"
 						+ value.getTotalFrags() + ";" + value.getTotalDeaths()
 						+ ";" + value.getTotalSuicides() + ";"
-						+ value.getTotalEnvironment() + ";" + value.getFlags()
-						+ ";" + value.getTeamKiller() + ";"
-						+ value.getTeamKilled() + ";"
-						+ value.computeScorePerPlay() + ";"
+						+ value.getTotalEnvironment() + ";"
+						+ value.getFlagsCaptured() + ";"
+						+ value.getTeamKiller() + ";" + value.getTeamKilled()
+						+ ";" + value.computeScorePerPlay() + ";"
 						+ value.computeFragPerPlay() + ";"
 						+ value.computeFlagPerPlay() + ";"
 						+ value.computeFragPerDeathRatio() + ";"
@@ -161,10 +161,10 @@ public class ReportGenerator {
 						+ value.getNbPlays() + ";" + value.getTotalFrags()
 						+ ";" + value.getTotalDeaths() + ";"
 						+ value.getTotalSuicides() + ";"
-						+ value.getTotalEnvironment() + ";" + value.getFlags()
-						+ ";" + value.getTeamKiller() + ";"
-						+ value.getTeamKilled() + ";"
-						+ value.computeScorePerPlay() + ";"
+						+ value.getTotalEnvironment() + ";"
+						+ value.getFlagsCaptured() + ";"
+						+ value.getTeamKiller() + ";" + value.getTeamKilled()
+						+ ";" + value.computeScorePerPlay() + ";"
 						+ value.computeFragPerPlay() + ";"
 						+ value.computeFlagPerPlay() + ";"
 						+ value.computeFragPerDeathRatio() + ";"

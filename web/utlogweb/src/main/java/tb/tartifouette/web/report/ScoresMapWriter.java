@@ -36,7 +36,8 @@ public class ScoresMapWriter extends AbstractFileEntryWriter {
 					.append(value.getTotalDeaths()).append(SEMI_COLUMN)
 					.append(value.getTotalSuicides()).append(SEMI_COLUMN)
 					.append(value.getTotalEnvironment()).append(SEMI_COLUMN)
-					.append(value.getFlags()).append(SEMI_COLUMN)
+					.append(value.getFlagsCaptured()).append(SEMI_COLUMN)
+					.append(value.getFlagsReturned()).append(SEMI_COLUMN)
 					.append(value.getTeamKiller()).append(SEMI_COLUMN)
 					.append(value.getTeamKilled()).append(SEMI_COLUMN)
 					.append(value.computeScorePerPlay()).append(SEMI_COLUMN)
@@ -58,6 +59,6 @@ public class ScoresMapWriter extends AbstractFileEntryWriter {
 
 	@Override
 	public int getNbTitles() {
-		return 17;
+		return 18;
 	}
 }
