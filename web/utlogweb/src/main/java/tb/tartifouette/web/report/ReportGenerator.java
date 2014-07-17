@@ -54,6 +54,7 @@ public class ReportGenerator {
 		writers.add(new UsersDetailWriter(stats, locale));
 		writers.add(new UsersWriter(stats, locale));
 		writers.add(new WeaponWriter(stats, locale));
+		writers.add(new HitsWriter(stats, locale));
 		return writers;
 	}
 

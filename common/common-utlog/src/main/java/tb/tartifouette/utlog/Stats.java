@@ -6,10 +6,12 @@ import java.util.Map.Entry;
 
 import tb.tartifouette.utlog.HitResolver.BodyPart;
 import tb.tartifouette.utlog.HitResolver.Weapon;
+import tb.tartifouette.utlog.keys.HitsKey;
 import tb.tartifouette.utlog.keys.UserMap;
 import tb.tartifouette.utlog.keys.WeaponPerKiller;
 import tb.tartifouette.utlog.keys.WhoKilledWho;
 import tb.tartifouette.utlog.keys.WhoKilledWhoWithWhat;
+import tb.tartifouette.utlog.values.Hits;
 import tb.tartifouette.utlog.values.MapResult;
 import tb.tartifouette.utlog.values.Serie;
 import tb.tartifouette.utlog.values.UserScore;
@@ -31,6 +33,8 @@ public class Stats {
 	private final Map<UserMap, UserScore> statsUserMapScore = new HashMap<UserMap, UserScore>();
 
 	private final Map<String, Serie> series = new HashMap<String, Serie>();
+
+	private final Map<HitsKey, Hits> hits = new HashMap<HitsKey, Hits>();
 
 	public void updateEnvironmentKill(String user) {
 
@@ -224,6 +228,10 @@ public class Stats {
 		return statsKills1;
 	}
 
+	public Map<HitsKey, Hits> getHits() {
+		return hits;
+	}
+
 	public void updateKillSerie(String user, int time) {
 		UserMap userMap = new UserMap(user, Context.getInstance()
 				.getCurrentMap());
@@ -331,9 +339,24 @@ public class Stats {
 		currentSerie.setStartTime(time);
 	}
 
-    public void addHit(String shouter, String shouted, BodyPart bodyPart, Weapon weapon) {
-        // TODO Auto-generated method stub
+	public void addHit(String shouter, String shouted, BodyPart bodyPart,
+			Weapon weapon) {
+		HitsKey key = new HitsKey(shouter, shouted, weapon.name(),
+				bodyPart.name());
+		Hits hit = hits.get(key);
+		if (hit == null) {
+			hit = new Hits();
+			hits.put(key, hit);
+		}
+		Hits addHit = new Hits();
+		addHit.setCount(1);
+		addHit.setHp(computeHp(bodyPart, weapon));
+		hit.add(addHit);
 
-    }
+	}
+
+	private int computeHp(BodyPart bodyPart, Weapon weapon) {
+		return DamageManager.getInstance().getDamage(weapon, bodyPart);
+	}
 
 }
