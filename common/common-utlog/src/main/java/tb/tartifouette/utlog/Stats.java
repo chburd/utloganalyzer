@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import tb.tartifouette.utlog.HitResolver.BodyPart;
+import tb.tartifouette.utlog.HitResolver.Weapon;
 import tb.tartifouette.utlog.keys.UserMap;
 import tb.tartifouette.utlog.keys.WeaponPerKiller;
 import tb.tartifouette.utlog.keys.WhoKilledWho;
@@ -328,5 +330,10 @@ public class Stats {
 		}
 		currentSerie.setStartTime(time);
 	}
+
+    public void addHit(String shouter, String shouted, BodyPart bodyPart, Weapon weapon) {
+        // TODO Auto-generated method stub
+
+    }
 
 }
