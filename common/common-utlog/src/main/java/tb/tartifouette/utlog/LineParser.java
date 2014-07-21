@@ -16,13 +16,13 @@ public class LineParser {
 	private static final String ENVIRONMENT = "<non-client>";
 
 	private static final Pattern KILL_LINE = Pattern
-			.compile("\\s*(\\d+:\\d+)s+Kill:\\s\\d+\\s\\d+\\s\\d+:\\s+(\\S+)\\skilled (\\S+) by (.*)");
+			.compile("\\s*(\\d+:\\d+)\\s+Kill:\\s\\d+\\s\\d+\\s\\d+:\\s+(\\S+)\\skilled (\\S+) by (.*)");
 
 	private static final Pattern FLAG_LINE = Pattern
-			.compile("\\s*\\d+:\\d+s+Flag:\\s(\\d+)\\s(\\d+):\\s(.*)");
+			.compile("\\s*\\d+:\\d+\\s+Flag:\\s(\\d+)\\s(\\d+):\\s(.*)");
 
 	private static final Pattern STATS_LINE = Pattern
-			.compile("\\s*(\\d+:\\d+)s+score:\\s(\\d+)\\s+ping:\\s+\\d+\\s+client:\\s+\\d+\\s+(.*)");
+			.compile("\\s*(\\d+:\\d+)\\s+score:\\s(\\d+)\\s+ping:\\s+\\d+\\s+client:\\s+\\d+\\s+(.*)");
 
 	private static final Pattern CONNECT_LINE = Pattern
 			.compile("\\s+\\d+:\\d+\\s+ClientUserinfo:\\s+(\\d+)\\s+\\\\ip\\\\(\\d+\\.\\d+\\.\\d+\\.\\d+):\\d+\\\\name\\\\(.*)\\\\racered.*");
