@@ -40,7 +40,7 @@ public class UserScore implements Comparable<UserScore> {
 		hitsGiven += value.hitsGiven;
 		damageGiven += value.damageGiven;
 		hitsReceived += value.hitsReceived;
-		damageReceived += value.hitsGiven;
+		damageReceived += value.damageReceived;
 		if (bestFragSerie < value.bestFragSerie) {
 			bestFragSerie = value.bestFragSerie;
 		}
