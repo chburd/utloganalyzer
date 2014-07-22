@@ -16,6 +16,10 @@ public class UserScore implements Comparable<UserScore> {
 	private int worseKillSerie;
 	private int bestFragSerieDurationInS;
 	private int worstKillSerieDurationInS;
+	private int hitsGiven;
+	private int damageGiven;
+	private int hitsReceived;
+	private int damageReceived;
 
 	@Override
 	public int compareTo(UserScore o) {
@@ -33,6 +37,10 @@ public class UserScore implements Comparable<UserScore> {
 		flagsReturned += value.flagsReturned;
 		teamKiller += value.teamKiller;
 		teamKilled += value.teamKilled;
+		hitsGiven += value.hitsGiven;
+		damageGiven += value.damageGiven;
+		hitsReceived += value.hitsReceived;
+		damageReceived += value.hitsGiven;
 		if (bestFragSerie < value.bestFragSerie) {
 			bestFragSerie = value.bestFragSerie;
 		}
@@ -194,6 +202,57 @@ public class UserScore implements Comparable<UserScore> {
 
 	public void setWorstKillSerieDurationInS(int worstKillSerieDurationInS) {
 		this.worstKillSerieDurationInS = worstKillSerieDurationInS;
+	}
+
+	public int getHitsGiven() {
+		return hitsGiven;
+	}
+
+	public void setHitsGiven(int hitsGiven) {
+		this.hitsGiven = hitsGiven;
+	}
+
+	public int getDamageGiven() {
+		return damageGiven;
+	}
+
+	public void setDamageGiven(int damageGiven) {
+		this.damageGiven = damageGiven;
+	}
+
+	public int getHitsReceived() {
+		return hitsReceived;
+	}
+
+	public void setHitsReceived(int hitsReceived) {
+		this.hitsReceived = hitsReceived;
+	}
+
+	public int getDamageReceived() {
+		return damageReceived;
+	}
+
+	public void setDamageReceived(int damageReceived) {
+		this.damageReceived = damageReceived;
+	}
+
+	public void incrementHitsGiven() {
+		hitsGiven++;
+
+	}
+
+	public void addDamageGiven(int damage) {
+		damageGiven += damage;
+
+	}
+
+	public void incrementHitsReceived() {
+		hitsReceived++;
+
+	}
+
+	public void addDamageReceived(int damage) {
+		damageReceived += damage;
 	}
 
 }

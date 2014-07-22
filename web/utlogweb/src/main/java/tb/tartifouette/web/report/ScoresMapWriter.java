@@ -46,6 +46,10 @@ public class ScoresMapWriter extends AbstractFileEntryWriter {
 					.append(value.computeFragPerDeathRatio())
 					.append(SEMI_COLUMN).append(value.getBestFragSerie())
 					.append(SEMI_COLUMN).append((-value.getWorseKillSerie()))
+					.append(SEMI_COLUMN).append((value.getHitsGiven()))
+					.append(SEMI_COLUMN).append((value.getHitsReceived()))
+					.append(SEMI_COLUMN).append((value.getDamageGiven()))
+					.append(SEMI_COLUMN).append((value.getDamageReceived()))
 					.append(SEMI_COLUMN).append(EOL);
 		}
 		return writer.toString();
@@ -59,6 +63,6 @@ public class ScoresMapWriter extends AbstractFileEntryWriter {
 
 	@Override
 	public int getNbTitles() {
-		return 18;
+		return 22;
 	}
 }

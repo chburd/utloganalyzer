@@ -350,9 +350,21 @@ public class Stats {
 		}
 		Hits addHit = new Hits();
 		addHit.setCount(1);
-		addHit.setHp(computeHp(bodyPart, weapon));
+		int damage = computeHp(bodyPart, weapon);
+		addHit.setHp(damage);
 		hit.add(addHit);
 
+		UserMap shouterMap = new UserMap(shouter, Context.getInstance()
+				.getCurrentMap());
+		UserScore shouterScore = getOrInitExistingScore(shouterMap);
+		shouterScore.incrementHitsGiven();
+		shouterScore.addDamageGiven(damage);
+
+		UserMap shoutedMap = new UserMap(shouted, Context.getInstance()
+				.getCurrentMap());
+		UserScore shoutedScore = getOrInitExistingScore(shoutedMap);
+		shoutedScore.incrementHitsReceived();
+		shoutedScore.addDamageReceived(damage);
 	}
 
 	private int computeHp(BodyPart bodyPart, Weapon weapon) {
