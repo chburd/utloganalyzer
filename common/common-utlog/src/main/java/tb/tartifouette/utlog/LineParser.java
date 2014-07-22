@@ -8,18 +8,21 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import tb.tartifouette.utlog.HitResolver.BodyPart;
+import tb.tartifouette.utlog.HitResolver.Weapon;
+
 public class LineParser {
 
 	private static final String ENVIRONMENT = "<non-client>";
 
 	private static final Pattern KILL_LINE = Pattern
-			.compile("\\s*(\\d+:\\d+) Kill:\\s\\d+\\s\\d+\\s\\d+:\\s+(\\S+)\\skilled (\\S+) by (.*)");
+			.compile("\\s*(\\d+:\\d+)\\s+Kill:\\s\\d+\\s\\d+\\s\\d+:\\s+(\\S+)\\skilled (\\S+) by (.*)");
 
 	private static final Pattern FLAG_LINE = Pattern
-			.compile("\\s*\\d+:\\d+ Flag:\\s(\\d+)\\s(\\d+):\\s(.*)");
+			.compile("\\s*\\d+:\\d+\\s+Flag:\\s(\\d+)\\s(\\d+):\\s(.*)");
 
 	private static final Pattern STATS_LINE = Pattern
-			.compile("\\s*(\\d+:\\d+) score:\\s(\\d+)\\s+ping:\\s+\\d+\\s+client:\\s+\\d+\\s+(.*)");
+			.compile("\\s*(\\d+:\\d+)\\s+score:\\s(\\d+)\\s+ping:\\s+\\d+\\s+client:\\s+\\d+\\s+(.*)");
 
 	private static final Pattern CONNECT_LINE = Pattern
 			.compile("\\s+\\d+:\\d+\\s+ClientUserinfo:\\s+(\\d+)\\s+\\\\ip\\\\(\\d+\\.\\d+\\.\\d+\\.\\d+):\\d+\\\\name\\\\(.*)\\\\racered.*");
@@ -29,6 +32,9 @@ public class LineParser {
 
 	private static final Pattern MAP_NAME = Pattern
 			.compile("\\s+\\d+:\\d+\\s+InitGame:\\s+.*\\\\mapname\\\\([^\\\\]*)\\\\.*");
+
+	private static final Pattern HIT = Pattern
+			.compile("\\s+(\\d+:\\d+)\\s+Hit:\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+).*");
 
 	private static final DateFormat HOUR_PARSER = new SimpleDateFormat("mm:ss");
 
@@ -50,6 +56,7 @@ public class LineParser {
 		parseAlias(line);
 		parseUserId(line);
 		parseMap(line);
+		parseHit(line);
 	}
 
 	private void parseMap(String line) {
@@ -113,6 +120,22 @@ public class LineParser {
 				stats.updateTeamFlag(team);
 			}
 			stats.updateUserFlag(resolvedAlias, flagAction);
+		}
+	}
+
+	private void parseHit(String line) {
+		Matcher matcher = HIT.matcher(line);
+		if (matcher.matches()) {
+			String shouted = matcher.group(2);
+			shouted = Context.getInstance().getUsername(shouted);
+			String shouter = matcher.group(3);
+			shouter = Context.getInstance().getUsername(shouter);
+			String bodyPartId = matcher.group(4);
+			BodyPart bodyPart = HitResolver.getInstance().resolveBodyPart(
+					bodyPartId);
+			String weaponId = matcher.group(5);
+			Weapon weapon = HitResolver.getInstance().resolveWeapon(weaponId);
+			stats.addHit(shouter, shouted, bodyPart, weapon);
 		}
 	}
 

@@ -26,7 +26,7 @@
 	<br/>
 	<br/>
 	<br/>
-	Copyright 2013 - chburd
+	Copyright 2013-2014 - chburd
 	<br/>
 	project info : <a href="https://github.com/chburd/utloganalyzer">https://github.com/chburd/utloganalyzer</a>
 </body>

@@ -11,10 +11,12 @@ import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import tb.tartifouette.MapUtils;
+import tb.tartifouette.utlog.keys.HitsKey;
 import tb.tartifouette.utlog.keys.UserMap;
 import tb.tartifouette.utlog.keys.WeaponPerKiller;
 import tb.tartifouette.utlog.keys.WhoKilledWho;
 import tb.tartifouette.utlog.keys.WhoKilledWhoWithWhat;
+import tb.tartifouette.utlog.values.Hits;
 import tb.tartifouette.utlog.values.MapResult;
 import tb.tartifouette.utlog.values.UserScore;
 import tb.tartifouette.utlog.values.UserStats;
@@ -48,6 +50,27 @@ public class ReportGenerator {
 		generateUserDetailedStats();
 		generateMapStats();
 		generateWeaponStats();
+		generateHitsStats();
+	}
+
+	private void generateHitsStats() throws IOException {
+		Writer writer = null;
+		try {
+			log.info("Writing report file " + destDirectory + "/hits.csv");
+			writer = new FileWriter(destDirectory + "/hits.csv");
+			writer.write("Shouter;Shouted;Weapon;BodyPart;Nb Hits;Damage" + EOL);
+			Map<HitsKey, Hits> hits = MapUtils.sortByValue(stats.getHits());
+			for (Entry<HitsKey, Hits> entry : hits.entrySet()) {
+				HitsKey key = entry.getKey();
+				Hits value = entry.getValue();
+				writer.write(key.getShouter() + ";" + key.getShouted() + ";"
+						+ key.getWeapon() + ";" + key.getRegion() + ";"
+						+ value.getCount() + ";" + value.getHp() + ";" + value
+						+ EOL);
+			}
+		} finally {
+			IOUtils.closeQuietly(writer);
+		}
 	}
 
 	private void generateWeaponStats() throws IOException {
