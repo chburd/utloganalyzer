@@ -6,5 +6,6 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>utlogweb</module>
+		<module>weblive</module>
 	</modules>
 </project>

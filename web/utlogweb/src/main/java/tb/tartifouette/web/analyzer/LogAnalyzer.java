@@ -25,7 +25,7 @@ import tb.tartifouette.utlog.Stats;
 
 public class LogAnalyzer {
 
-	private static final Logger log = Logger.getLogger(LogAnalyzer.class);;
+	private static final Logger log = Logger.getLogger(LogAnalyzer.class);
 
 	private final List<Input> items;
 
