@@ -17,6 +17,10 @@
 		<servlet-class>tb.tartifouette.weblive.servlet.AutoRefreshStats</servlet-class>
 	</servlet>
 	<servlet>
+		<servlet-name>tb.tartifouette.weblive.servlet.StatsDownload</servlet-name>
+		<servlet-class>tb.tartifouette.weblive.servlet.StatsDownload</servlet-class>
+	</servlet>
+	<servlet>
 		<servlet-name>tb.tartifouette.weblive.init.InitServlet</servlet-name>
 		<servlet-class>tb.tartifouette.weblive.init.InitServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
@@ -25,5 +29,9 @@
 	<servlet-mapping>
 		<servlet-name>tb.tartifouette.weblive.servlet.AutoRefreshStats</servlet-name>
 		<url-pattern>/Stats</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>tb.tartifouette.weblive.servlet.StatsDownload</servlet-name>
+		<url-pattern>/Download</url-pattern>
 	</servlet-mapping>
 </web-app>

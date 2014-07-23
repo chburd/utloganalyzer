@@ -28,9 +28,9 @@ import org.apache.log4j.Logger;
 
 import tb.tartifouette.utlog.AliasManager;
 import tb.tartifouette.utlog.Stats;
+import tb.tartifouette.utlog.report.ReportGenerator;
 import tb.tartifouette.web.analyzer.Input;
 import tb.tartifouette.web.analyzer.LogAnalyzer;
-import tb.tartifouette.web.report.ReportGenerator;
 
 /**
  * Servlet implementation class UtLogUploadServlet

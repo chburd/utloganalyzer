@@ -23,7 +23,12 @@ public class UserScore implements Comparable<UserScore> {
 
 	@Override
 	public int compareTo(UserScore o) {
-		return (int) (1000 * getScorePerPlay() - 1000 * o.getScorePerPlay());
+		int compare = (int) (1000 * getScorePerPlay() - 1000 * o
+				.getScorePerPlay());
+		if (compare == 0) {
+			compare = (damageGiven - o.getDamageGiven());
+		}
+		return compare;
 	}
 
 	public void add(UserScore value) {

@@ -1,4 +1,4 @@
-package tb.tartifouette.web.report;
+package tb.tartifouette.utlog.report;
 
 import java.util.Locale;
 import java.util.Map;
@@ -6,27 +6,28 @@ import java.util.Map.Entry;
 
 import tb.tartifouette.MapUtils;
 import tb.tartifouette.utlog.Stats;
-import tb.tartifouette.utlog.keys.WeaponPerKiller;
+import tb.tartifouette.utlog.keys.WhoKilledWhoWithWhat;
 
-public class WeaponWriter extends AbstractFileEntryWriter {
+public class UsersDetailWriter extends AbstractFileEntryWriter {
 
-	public WeaponWriter(Stats stats, Locale locale) {
+	public UsersDetailWriter(Stats stats, Locale locale) {
 		super(stats, locale);
 	}
 
 	@Override
 	public String getFileName() {
-		return "weapons.csv";
+		return "users-details.csv";
 	}
 
 	@Override
 	public String getContent() {
 		StringBuilder writer = new StringBuilder();
-		Map<WeaponPerKiller, Integer> weapons = MapUtils.sortByValue(stats
-				.getStatsWeapons());
-		for (Entry<WeaponPerKiller, Integer> entry : weapons.entrySet()) {
-			WeaponPerKiller user = entry.getKey();
+		Map<WhoKilledWhoWithWhat, Integer> users = MapUtils.sortByValue(stats
+				.getStatsKills1());
+		for (Entry<WhoKilledWhoWithWhat, Integer> entry : users.entrySet()) {
+			WhoKilledWhoWithWhat user = entry.getKey();
 			writer.append(user.getKiller()).append(SEMI_COLUMN)
+					.append(user.getKilled()).append(SEMI_COLUMN)
 					.append(user.getWeapon()).append(SEMI_COLUMN)
 					.append(entry.getValue()).append(EOL);
 		}
@@ -35,12 +36,12 @@ public class WeaponWriter extends AbstractFileEntryWriter {
 
 	@Override
 	public String getBaseBundleName() {
-		return "weapons.stats.title";
+		return "users.detail.stats.title";
 	}
 
 	@Override
 	public int getNbTitles() {
-		return 3;
+		return 4;
 	}
 
 }

@@ -1,4 +1,4 @@
-package tb.tartifouette.web.report;
+package tb.tartifouette.utlog.report;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
