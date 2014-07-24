@@ -137,7 +137,7 @@
 }
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-<meta http-equiv="refresh" content="5" />
+<meta http-equiv="refresh" content="15" />
 <title>Urban Terror live stats</title>
 </head>
 <body>
