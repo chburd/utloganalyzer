@@ -44,6 +44,7 @@ public class Stats {
 		existingScore
 				.setTotalEnvironment(existingScore.getTotalEnvironment() + 1);
 		statsUserMapScore.put(userMap, existingScore);
+		existingScore.setScore(existingScore.getScore() - 100);
 	}
 
 	private UserScore getOrInitExistingScore(UserMap userMap) {
@@ -61,6 +62,7 @@ public class Stats {
 		UserScore existingScore = getOrInitExistingScore(userMap);
 		existingScore.setTotalSuicides(existingScore.getTotalSuicides() + 1);
 		statsUserMapScore.put(userMap, existingScore);
+		existingScore.setScore(existingScore.getScore() - 100);
 	}
 
 	public void updateUserScore(String user, int score, int time) {
@@ -68,7 +70,7 @@ public class Stats {
 		UserMap userMap = new UserMap(user, Context.getInstance()
 				.getCurrentMap());
 		UserScore existingScore = getOrInitExistingScore(userMap);
-		existingScore.setTotalScore(existingScore.getTotalScore() + score);
+		existingScore.setOldScore(existingScore.getOldScore() + score);
 		existingScore.setNbPlays(existingScore.getNbPlays() + 1);
 		statsUserMapScore.put(userMap, existingScore);
 
@@ -100,6 +102,7 @@ public class Stats {
 		UserScore existingScore = getOrInitExistingScore(userMap);
 		existingScore.setTeamKiller(existingScore.getTeamKiller() + 1);
 		statsUserMapScore.put(userMap, existingScore);
+		existingScore.setScore(existingScore.getScore() - 100);
 	}
 
 	public void updateTeamKilled(String user) {
@@ -119,9 +122,11 @@ public class Stats {
 		if (action == FlagAction.FLAG_CAPTURED) {
 			existingScore
 					.setFlagsCaptured(existingScore.getFlagsCaptured() + 1);
+			existingScore.setScore(existingScore.getScore() + 1500);
 		} else if (action == FlagAction.FLAG_RETURNED) {
 			existingScore
 					.setFlagsReturned(existingScore.getFlagsReturned() + 1);
+			existingScore.setScore(existingScore.getScore() + 100);
 		}
 		statsUserMapScore.put(userMap, existingScore);
 	}
@@ -143,6 +148,7 @@ public class Stats {
 		UserScore existingScore = getOrInitExistingScore(userMap);
 		existingScore.setTotalFrags(existingScore.getTotalFrags() + 1);
 		statsUserMapScore.put(userMap, existingScore);
+		existingScore.setScore(existingScore.getScore() + 100);
 	}
 
 	public void updateWeaponPerKiller(String killer, String weapon) {

@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.lang.StringUtils"%>
 <%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@page import="tb.tartifouette.weblive.Statistics"%>
 <%@page import="java.util.Map"%>
@@ -12,6 +13,9 @@
   <title>Urban Terror live stats</title>
 </head>
 <body>
+<%
+String selectedUser = StringUtils.trimToEmpty(request.getParameter("user"));
+%>
   <div class="navbar navbar-inverse" role="navigation">
     <div class="container">
       <div class="navbar-header">
@@ -42,7 +46,6 @@
         <%
           for (Map.Entry<String, UserScore> entry : Statistics.getStats().entrySet()) {
             UserScore score = entry.getValue();
-            String selectedUser = request.getParameter("user");
             String user = StringEscapeUtils.escapeHtml(entry.getKey());
             boolean selected = entry.getKey().equals(selectedUser);
             String style = "";
@@ -52,7 +55,7 @@
         %>
           <tr <%=style%>>
             <td><a href="?user=<%=user%>"><%=user%></a></td>
-            <td><%=score.getTotalScore()%></td>
+            <td><%=score.getScore()%> (<%=score.getNbPlays()+1%>)</td>
             <td><%=score.getTotalFrags()%></td>
             <td><%=score.getTotalDeaths()%></td>
             <td><%=score.getFlagsCaptured()%></td>
@@ -74,6 +77,12 @@
       <div class="col-md-1">
         <form action="<%=request.getContextPath()%>/Download" method="post">
           <input type="submit" value="Download" />
+        </form>
+      </div>
+      <div class="col-md-1">
+        <form action="<%=request.getContextPath()%>/Stats" method="get">
+          <input name="user" type="text" value="<%=selectedUser %>" />
+          <input type="submit" value="Follow user" />
         </form>
       </div>
     </div>

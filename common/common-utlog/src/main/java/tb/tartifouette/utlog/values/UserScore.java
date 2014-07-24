@@ -3,7 +3,7 @@ package tb.tartifouette.utlog.values;
 public class UserScore implements Comparable<UserScore> {
 
 	private int nbPlays;
-	private int totalScore;
+	private int oldScore;
 	private int totalFrags;
 	private int totalDeaths;
 	private int totalSuicides;
@@ -20,6 +20,7 @@ public class UserScore implements Comparable<UserScore> {
 	private int damageGiven;
 	private int hitsReceived;
 	private int damageReceived;
+	private int score;
 
 	@Override
 	public int compareTo(UserScore o) {
@@ -33,7 +34,7 @@ public class UserScore implements Comparable<UserScore> {
 
 	public void add(UserScore value) {
 		nbPlays += value.nbPlays;
-		totalScore += value.totalScore;
+		oldScore += value.oldScore;
 		totalFrags += value.totalFrags;
 		totalDeaths += value.totalDeaths;
 		totalSuicides += value.totalSuicides;
@@ -46,6 +47,7 @@ public class UserScore implements Comparable<UserScore> {
 		damageGiven += value.damageGiven;
 		hitsReceived += value.hitsReceived;
 		damageReceived += value.damageReceived;
+		score += value.score;
 		if (bestFragSerie < value.bestFragSerie) {
 			bestFragSerie = value.bestFragSerie;
 		}
@@ -66,11 +68,7 @@ public class UserScore implements Comparable<UserScore> {
 	}
 
 	private double getScorePerPlay() {
-		double result = 0;
-		if (nbPlays != 0) {
-			result = (double) totalScore / nbPlays;
-		}
-		return result;
+		return (double) score / (nbPlays + 1);
 	}
 
 	public String computeFlagPerPlay() {
@@ -105,12 +103,12 @@ public class UserScore implements Comparable<UserScore> {
 		this.nbPlays = nbPlays;
 	}
 
-	public int getTotalScore() {
-		return totalScore;
+	public int getOldScore() {
+		return oldScore;
 	}
 
-	public void setTotalScore(int totalScore) {
-		this.totalScore = totalScore;
+	public void setOldScore(int oldScore) {
+		this.oldScore = oldScore;
 	}
 
 	public int getTotalFrags() {
@@ -258,6 +256,14 @@ public class UserScore implements Comparable<UserScore> {
 
 	public void addDamageReceived(int damage) {
 		damageReceived += damage;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
 	}
 
 }

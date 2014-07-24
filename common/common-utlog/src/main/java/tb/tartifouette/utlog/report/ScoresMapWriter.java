@@ -30,7 +30,7 @@ public class ScoresMapWriter extends AbstractFileEntryWriter {
 			UserScore value = user.getValue();
 			writer.append(user.getKey().getUser()).append(SEMI_COLUMN)
 					.append(user.getKey().getMap()).append(SEMI_COLUMN)
-					.append(value.getTotalScore()).append(SEMI_COLUMN)
+					.append(value.getScore()).append(SEMI_COLUMN)
 					.append(value.getNbPlays()).append(SEMI_COLUMN)
 					.append(value.getTotalFrags()).append(SEMI_COLUMN)
 					.append(value.getTotalDeaths()).append(SEMI_COLUMN)
