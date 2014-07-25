@@ -145,10 +145,10 @@ public class ReportGenerator {
 			for (Entry<UserMap, UserScore> user : users.entrySet()) {
 				UserScore value = user.getValue();
 				writer.write(user.getKey().getUser() + ";"
-						+ user.getKey().getMap() + ";" + value.getTotalScore()
-						+ ";" + value.getNbPlays() + ";"
-						+ value.getTotalFrags() + ";" + value.getTotalDeaths()
-						+ ";" + value.getTotalSuicides() + ";"
+						+ user.getKey().getMap() + ";" + value.getScore() + ";"
+						+ value.getNbPlays() + ";" + value.getTotalFrags()
+						+ ";" + value.getTotalDeaths() + ";"
+						+ value.getTotalSuicides() + ";"
 						+ value.getTotalEnvironment() + ";"
 						+ value.getFlagsCaptured() + ";"
 						+ value.getTeamKiller() + ";" + value.getTeamKilled()
@@ -180,7 +180,7 @@ public class ReportGenerator {
 					.getStatsUserScore());
 			for (Entry<String, UserScore> user : users.entrySet()) {
 				UserScore value = user.getValue();
-				writer.write(user.getKey() + ";" + value.getTotalScore() + ";"
+				writer.write(user.getKey() + ";" + value.getScore() + ";"
 						+ value.getNbPlays() + ";" + value.getTotalFrags()
 						+ ";" + value.getTotalDeaths() + ";"
 						+ value.getTotalSuicides() + ";"

@@ -27,7 +27,7 @@ public class ScoreWriter extends AbstractFileEntryWriter {
 		for (Entry<String, UserScore> user : users.entrySet()) {
 			UserScore value = user.getValue();
 			writer.append(user.getKey()).append(SEMI_COLUMN)
-					.append(value.getTotalScore()).append(SEMI_COLUMN)
+					.append(value.getScore()).append(SEMI_COLUMN)
 					.append(value.getNbPlays()).append(SEMI_COLUMN)
 					.append(value.getTotalFrags()).append(SEMI_COLUMN)
 					.append(value.getTotalDeaths()).append(SEMI_COLUMN)
