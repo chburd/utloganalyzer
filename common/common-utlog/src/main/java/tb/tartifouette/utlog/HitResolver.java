@@ -49,8 +49,7 @@ public class HitResolver {
 	// points
 
 	public enum BodyPart {
-		HEAD("0"), HELMET("1"), TORSO("2"), KEVLAR("3"), ARMS("4"), LEGS("5"), UNKNOWN(
-				"-1");
+		HEAD("0"), HELMET("1"), TORSO("2"), KEVLAR("3"), ARMS("4"), LEGS("5"), BODY("6"), UNKNOWN("-1");
 		private final String id;
 
 		BodyPart(String id) {
