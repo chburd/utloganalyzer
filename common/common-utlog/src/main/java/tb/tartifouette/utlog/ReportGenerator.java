@@ -4,11 +4,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.time.LocalDate;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import tb.tartifouette.MapUtils;
 import tb.tartifouette.utlog.keys.HitsKey;
@@ -25,22 +27,43 @@ public class ReportGenerator {
 
 	private static final String EOL = "\n";
 
-	private static final Logger log = Logger.getLogger(ReportGenerator.class);
+	private static final Logger log = LogManager.getLogger(ReportGenerator.class);
 
-	private final String destDirectory;
+	private static final String SEMI_COLUMN = ";";
+
+	private final File destDirectory;
 
 	private final Stats stats;
 
-	public ReportGenerator(Stats stats, String destDirectory) {
-		this.destDirectory = destDirectory;
+	public ReportGenerator(Stats stats, String destDirectory, String dateGuessedFromInput) {
+		this.destDirectory = getDestDirectory(destDirectory, dateGuessedFromInput);
+
 		this.stats = stats;
+	}
+
+	private File getDestDirectory(String destDirectory, String dateGuessedFromInput) {
+		String origDate = getDate(dateGuessedFromInput);
+		File dest = new File(destDirectory, origDate);
+		int i = 1;
+		while (dest.exists()) {
+			String date = origDate + "-" + i;
+			dest = new File(destDirectory, date);
+			i++;
+		}
+		return dest;
 	}
 
 	public void generateReport(AliasManager aliasManager) throws IOException {
 		log.info("Possible aliases : " + aliasManager.getPossibleAliases());
-		File f = new File(destDirectory);
-		f.mkdirs();
+		destDirectory.mkdirs();
 		generateStats();
+	}
+
+	private String getDate(String dateGuessedFromInput) {
+		if (dateGuessedFromInput != null) {
+			return dateGuessedFromInput;
+		}
+		return LocalDate.now().toString();
 	}
 
 	private void generateStats() throws IOException {
@@ -56,17 +79,16 @@ public class ReportGenerator {
 	private void generateHitsStats() throws IOException {
 		Writer writer = null;
 		try {
-			log.info("Writing report file " + destDirectory + "/hits.csv");
-			writer = new FileWriter(destDirectory + "/hits.csv");
-			writer.write("Shouter;Shouted;Weapon;BodyPart;Nb Hits;Damage" + EOL);
+			File destFile = new File(destDirectory, "hits.csv");
+			log.info("Writing report file " + destFile.getAbsolutePath());
+			writer = new FileWriter(destFile);
+			writer.write("Shouter;Shouted;Weapon;Body Region;Hit count;Damage" + EOL);
 			Map<HitsKey, Hits> hits = MapUtils.sortByValue(stats.getHits());
 			for (Entry<HitsKey, Hits> entry : hits.entrySet()) {
 				HitsKey key = entry.getKey();
 				Hits value = entry.getValue();
-				writer.write(key.getShouter() + ";" + key.getShouted() + ";"
-						+ key.getWeapon() + ";" + key.getRegion() + ";"
-						+ value.getCount() + ";" + value.getHp() + ";" + value
-						+ EOL);
+				writer.write(key.getShouter() + ";" + key.getShouted() + ";" + key.getWeapon() + ";" + key.getRegion()
+						+ ";" + value.getCount() + ";" + value.getHp() + EOL);
 			}
 		} finally {
 			IOUtils.closeQuietly(writer);
@@ -76,15 +98,14 @@ public class ReportGenerator {
 	private void generateWeaponStats() throws IOException {
 		Writer writer = null;
 		try {
-			log.info("Writing report file " + destDirectory + "/weapons.csv");
-			writer = new FileWriter(destDirectory + "/weapons.csv");
-			writer.write("User;Arme;nb kills" + EOL);
-			Map<WeaponPerKiller, Integer> weapons = MapUtils.sortByValue(stats
-					.getStatsWeapons());
+			File destFile = new File(destDirectory, "weapons.csv");
+			log.info("Writing report file " + destFile.getAbsolutePath());
+			writer = new FileWriter(destFile);
+			writer.write("User;Weapon;# frags" + EOL);
+			Map<WeaponPerKiller, Integer> weapons = MapUtils.sortByValue(stats.getStatsWeapons());
 			for (Entry<WeaponPerKiller, Integer> entry : weapons.entrySet()) {
 				WeaponPerKiller user = entry.getKey();
-				writer.write(user.getKiller() + ";" + user.getWeapon() + ";"
-						+ entry.getValue() + EOL);
+				writer.write(user.getKiller() + ";" + user.getWeapon() + ";" + entry.getValue() + EOL);
 			}
 		} finally {
 			IOUtils.closeQuietly(writer);
@@ -94,16 +115,15 @@ public class ReportGenerator {
 	private void generateUserDetailedStats() throws IOException {
 		Writer writer = null;
 		try {
-			log.info("Writing report file " + destDirectory
-					+ "/users-details.csv");
-			writer = new FileWriter(destDirectory + "/users-details.csv");
-			writer.write("User;Ennemi;Arme;nb kills" + EOL);
-			Map<WhoKilledWhoWithWhat, Integer> users = MapUtils
-					.sortByValue(stats.getStatsKills1());
+			File destFile = new File(destDirectory, "users-details.csv");
+			log.info("Writing report file " + destFile.getAbsolutePath());
+			writer = new FileWriter(destFile);
+			writer.write("User;Opponent;Weapon;# frags" + EOL);
+			Map<WhoKilledWhoWithWhat, Integer> users = MapUtils.sortByValue(stats.getStatsKills1());
 			for (Entry<WhoKilledWhoWithWhat, Integer> entry : users.entrySet()) {
 				WhoKilledWhoWithWhat user = entry.getKey();
-				writer.write(user.getKiller() + ";" + user.getKilled() + ";"
-						+ user.getWeapon() + ";" + entry.getValue() + EOL);
+				writer.write(user.getKiller() + ";" + user.getKilled() + ";" + user.getWeapon() + ";" + entry.getValue()
+						+ EOL);
 			}
 		} finally {
 			IOUtils.closeQuietly(writer);
@@ -113,17 +133,16 @@ public class ReportGenerator {
 	private void generateUserStats() throws IOException {
 		Writer writer = null;
 		try {
-			log.info("Writing report file " + destDirectory + "/users.csv");
-			writer = new FileWriter(destDirectory + "/users.csv");
-			writer.write("User 1 ;User 2;user 1 kill user 2;user 2 kill user 1"
-					+ EOL);
-			Map<WhoKilledWho, UserStats> users = MapUtils.sortByValue(stats
-					.getStatsKills2());
+			File destFile = new File(destDirectory, "users.csv");
+			log.info("Writing report file " + destFile.getAbsolutePath());
+			writer = new FileWriter(destFile);
+			writer.write("User 1 ;User 2;User 1 kill User 2;User 2 kill User 1" + EOL);
+			Map<WhoKilledWho, UserStats> users = MapUtils.sortByValue(stats.getStatsKills2());
 			for (Entry<WhoKilledWho, UserStats> entry : users.entrySet()) {
 				WhoKilledWho user = entry.getKey();
 				UserStats value = entry.getValue();
-				writer.write(user.getKiller() + ";" + user.getKilled() + ";"
-						+ value.getNbFrags() + ";" + value.getNbKilled() + EOL);
+				writer.write(user.getKiller() + ";" + user.getKilled() + ";" + value.getNbFrags() + ";"
+						+ value.getNbKilled() + EOL);
 			}
 		} finally {
 			IOUtils.closeQuietly(writer);
@@ -133,33 +152,35 @@ public class ReportGenerator {
 	private void generateScorePerMapStats() throws IOException {
 		Writer writer = null;
 		try {
-			log.info("Writing report file " + destDirectory + "/scores-map.csv");
-			writer = new FileWriter(destDirectory + "/scores-map.csv");
-			writer.write("User;Map;score cumule;parties jouees;nb frags;nb morts;nb suicides;"
-					+ "tue par le decor;drapeaux ramenes;ingrat(tue ses coequipiers);mal aime(tue par ses coequipiers);"
-					+ "score/partie;frags/partie;drapeaux/partie;frag/mort;best frag serie;"
-					+ "meilleure duree invaincu(s);worst kill serie;pire durée sans marquer(s)"
-					+ EOL);
-			Map<UserMap, UserScore> users = MapUtils.sortByValue(stats
-					.getStatsUserMapScore());
+			File destFile = new File(destDirectory, "scores-map.csv");
+			log.info("Writing report file " + destFile.getAbsolutePath());
+			writer = new FileWriter(destFile);
+			writer.write("User;Map;Total score;# plays;# frags;# deaths;# suicides;"
+					+ "# environment kill;# flags captured;# flags returned;# teammate kill;# killed by his teammates;"
+					+ "score / play;frags / play;retrieved flags / play;frag / death ratio;best frag serie;worst kill serie;"
+					+ "hits given;hits received;damage given;damage received" + EOL);
+			Map<UserMap, UserScore> users = MapUtils.sortByValue(stats.getStatsUserMapScore());
 			for (Entry<UserMap, UserScore> user : users.entrySet()) {
+
 				UserScore value = user.getValue();
-				writer.write(user.getKey().getUser() + ";"
-						+ user.getKey().getMap() + ";" + value.getTotalScore()
-						+ ";" + value.getNbPlays() + ";"
-						+ value.getTotalFrags() + ";" + value.getTotalDeaths()
-						+ ";" + value.getTotalSuicides() + ";"
-						+ value.getTotalEnvironment() + ";"
-						+ value.getFlagsCaptured() + ";"
-						+ value.getTeamKiller() + ";" + value.getTeamKilled()
-						+ ";" + value.computeScorePerPlay() + ";"
-						+ value.computeFragPerPlay() + ";"
-						+ value.computeFlagPerPlay() + ";"
-						+ value.computeFragPerDeathRatio() + ";"
-						+ value.getBestFragSerie() + ";"
-						+ value.getBestFragSerieDurationInS() + ";"
-						+ (-value.getWorseKillSerie()) + ";"
-						+ value.getWorstKillSerieDurationInS() + EOL);
+				StringBuilder sb = new StringBuilder();
+				sb.append(user.getKey().getUser()).append(SEMI_COLUMN).append(user.getKey().getMap())
+						.append(SEMI_COLUMN).append(value.getTotalScore()).append(SEMI_COLUMN)
+						.append(value.getNbPlays()).append(SEMI_COLUMN).append(value.getTotalFrags())
+						.append(SEMI_COLUMN).append(value.getTotalDeaths()).append(SEMI_COLUMN)
+						.append(value.getTotalSuicides()).append(SEMI_COLUMN).append(value.getTotalEnvironment())
+						.append(SEMI_COLUMN).append(value.getFlagsCaptured()).append(SEMI_COLUMN)
+						.append(value.getFlagsReturned()).append(SEMI_COLUMN).append(value.getTeamKiller())
+						.append(SEMI_COLUMN).append(value.getTeamKilled()).append(SEMI_COLUMN)
+						.append(value.computeScorePerPlay()).append(SEMI_COLUMN).append(value.computeFragPerPlay())
+						.append(SEMI_COLUMN).append(value.computeFlagPerPlay()).append(SEMI_COLUMN)
+						.append(value.computeFragPerDeathRatio()).append(SEMI_COLUMN).append(value.getBestFragSerie())
+						.append(SEMI_COLUMN).append((-value.getWorseKillSerie())).append(SEMI_COLUMN)
+						.append((value.getHitsGiven())).append(SEMI_COLUMN).append((value.getHitsReceived()))
+						.append(SEMI_COLUMN).append((value.getDamageGiven())).append(SEMI_COLUMN)
+						.append((value.getDamageReceived())).append(SEMI_COLUMN).append(EOL);
+				writer.append(sb);
+
 			}
 		} finally {
 			IOUtils.closeQuietly(writer);
@@ -169,32 +190,33 @@ public class ReportGenerator {
 	private void generateScoreStats() throws IOException {
 		Writer writer = null;
 		try {
-			log.info("Writing report file " + destDirectory + "/scores.csv");
-			writer = new FileWriter(destDirectory + "/scores.csv");
-			writer.write("User;score cumule;parties jouees;nb frags;nb morts;nb suicides;tue par le decor;"
-					+ "drapeaux ramenes;ingrat(tue ses coequipiers);mal aime(tue par ses coequipiers);score/partie;"
-					+ "frags/partie;drapeaux/partie;frag/mort;best frag serie;"
-					+ "meilleure duree invaincu(s);worst kill serie;pire durée sans marquer(s)"
-					+ EOL);
-			Map<String, UserScore> users = MapUtils.sortByValue(stats
-					.getStatsUserScore());
+			File destFile = new File(destDirectory, "scores.csv");
+			log.info("Writing report file " + destFile.getAbsolutePath());
+			writer = new FileWriter(destFile);
+
+			writer.write("User;Total score;# plays;# frags;# deaths;# suicides;# environment kill;# flags captured;"
+					+ "# flags returned;# teammate kill;# killed by his teammates;score / play;frags / play;"
+					+ "retrieved flags / play;frag / death ratio;best frags serie;worst kill serie;hits given;"
+					+ "hits received;damage given;damage received" + EOL);
+			Map<String, UserScore> users = MapUtils.sortByValue(stats.getStatsUserScore());
 			for (Entry<String, UserScore> user : users.entrySet()) {
 				UserScore value = user.getValue();
-				writer.write(user.getKey() + ";" + value.getTotalScore() + ";"
-						+ value.getNbPlays() + ";" + value.getTotalFrags()
-						+ ";" + value.getTotalDeaths() + ";"
-						+ value.getTotalSuicides() + ";"
-						+ value.getTotalEnvironment() + ";"
-						+ value.getFlagsCaptured() + ";"
-						+ value.getTeamKiller() + ";" + value.getTeamKilled()
-						+ ";" + value.computeScorePerPlay() + ";"
-						+ value.computeFragPerPlay() + ";"
-						+ value.computeFlagPerPlay() + ";"
-						+ value.computeFragPerDeathRatio() + ";"
-						+ value.getBestFragSerie() + ";"
-						+ value.getBestFragSerieDurationInS() + ";"
-						+ (-value.getWorseKillSerie()) + ";"
-						+ value.getWorstKillSerieDurationInS() + EOL);
+				StringBuilder sb = new StringBuilder();
+				sb.append(user.getKey()).append(SEMI_COLUMN).append(value.getTotalScore()).append(SEMI_COLUMN)
+						.append(value.getNbPlays()).append(SEMI_COLUMN).append(value.getTotalFrags())
+						.append(SEMI_COLUMN).append(value.getTotalDeaths()).append(SEMI_COLUMN)
+						.append(value.getTotalSuicides()).append(SEMI_COLUMN).append(value.getTotalEnvironment())
+						.append(SEMI_COLUMN).append(value.getFlagsCaptured()).append(SEMI_COLUMN)
+						.append(value.getFlagsReturned()).append(SEMI_COLUMN).append(value.getTeamKiller())
+						.append(SEMI_COLUMN).append(value.getTeamKilled()).append(SEMI_COLUMN)
+						.append(value.computeScorePerPlay()).append(SEMI_COLUMN).append(value.computeFragPerPlay())
+						.append(SEMI_COLUMN).append(value.computeFlagPerPlay()).append(SEMI_COLUMN)
+						.append(value.computeFragPerDeathRatio()).append(SEMI_COLUMN).append(value.getBestFragSerie())
+						.append(SEMI_COLUMN).append((-value.getWorseKillSerie())).append(SEMI_COLUMN)
+						.append((value.getHitsGiven())).append(SEMI_COLUMN).append((value.getHitsReceived()))
+						.append(SEMI_COLUMN).append((value.getDamageGiven())).append(SEMI_COLUMN)
+						.append((value.getDamageReceived())).append(EOL);
+				writer.append(sb);
 			}
 		} finally {
 			IOUtils.closeQuietly(writer);
@@ -204,12 +226,12 @@ public class ReportGenerator {
 	private void generateMapStats() throws IOException {
 		Writer writer = null;
 		try {
-			log.info("Writing report file " + destDirectory + "/maps.csv");
-			writer = new FileWriter(destDirectory + "/maps.csv");
-			writer.write("Map;drapeaux bleus;drapeaux rouges;%victoires bleues"
-					+ EOL);
-			Map<String, MapResult> maps = MapUtils.sortByValue(stats
-					.getStatsTeamFlag());
+			File destFile = new File(destDirectory, "maps.csv");
+			log.info("Writing report file " + destFile.getAbsolutePath());
+			writer = new FileWriter(destFile);
+
+			writer.write("Map;Blue flags;Red flags;% blue flags" + EOL);
+			Map<String, MapResult> maps = MapUtils.sortByValue(stats.getStatsTeamFlag());
 			for (Entry<String, MapResult> map : maps.entrySet()) {
 				MapResult result = map.getValue();
 				String ratio = "N/A";
@@ -217,8 +239,7 @@ public class ReportGenerator {
 				if (totalPlays > 0) {
 					ratio = String.valueOf(100 * result.computeRatio());
 				}
-				writer.write(map.getKey() + ";" + result.getFlagBlue() + ";"
-						+ result.getFlagRed() + ";" + ratio + EOL);
+				writer.write(map.getKey() + ";" + result.getFlagBlue() + ";" + result.getFlagRed() + ";" + ratio + EOL);
 			}
 		} finally {
 			IOUtils.closeQuietly(writer);
