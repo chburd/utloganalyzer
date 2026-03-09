@@ -16,10 +16,30 @@ package tb.tartifouette.utlog;
 public class HitResolver {
 
 	public enum Weapon {
-		KNIFE("1"), BERETTA("2"), DEAGLE("3"), SPAS("4"), MP5K("5"), UMP("6"), HK69(
-				"7"), LR300("8"), G36("9"), PSG1("10"), HE_GREN("11"), SMOKE_GREN(
-				"13"), SR8("14"), AK("15"), BOMB("16"), NEGEV("17"), M4("19"), UNKNOWN21(
-				"21"), UNKNOWN22("22"), UNKNOWN("-1");
+		KNIFE("1"),
+BERETTA("2"),
+DEAGLE("3"),
+SPAS("4"),
+MP5K("5"),
+UMP("6"),
+HK69("7"),
+LR300("8"),
+G36("9"),
+PSG1("10"),
+HE_GREN("11"),
+FLASH_GREN("12"),
+SMOKE_GREN("13"),
+SR8("14"),
+AK("15"),
+BOMB("16"),
+NEGEV("17"),
+P90("18"),
+M4("19"),
+GOOMBA("20"),
+UNKNOWN21("21"),
+UNKNOWN22("22"),
+UNKNOWN("-1");
+		
 		private final String id;
 
 		Weapon(String id) {
@@ -49,7 +69,8 @@ public class HitResolver {
 	// points
 
 	public enum BodyPart {
-		HEAD("0"), HELMET("1"), TORSO("2"), KEVLAR("3"), ARMS("4"), LEGS("5"), BODY("6"), UNKNOWN("-1");
+		HEAD("0"), HELMET("1"), TORSO("2"), KEVLAR("3"), ARMS("4"), LEGS("5"), BODY("6"),
+GROIN("7"), UNKNOWN("-1");
 		private final String id;
 
 		BodyPart(String id) {
@@ -93,3 +114,4 @@ public class HitResolver {
 	}
 
 }
+
