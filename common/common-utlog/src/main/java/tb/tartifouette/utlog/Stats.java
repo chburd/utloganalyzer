@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import tb.tartifouette.utlog.HitResolver.BodyPart;
+import tb.tartifouette.utlog.HitResolver.BodyZone;
 import tb.tartifouette.utlog.HitResolver.Weapon;
 import tb.tartifouette.utlog.keys.HitsKey;
 import tb.tartifouette.utlog.keys.UserMap;
@@ -22,19 +22,19 @@ public class Stats {
 	public static final String BLUE = "team_CTF_blueflag";
 	public static final String RED = "team_CTF_redflag";
 
-	private final Map<WhoKilledWhoWithWhat, Integer> statsKills1 = new HashMap<WhoKilledWhoWithWhat, Integer>();
+	private final Map<WhoKilledWhoWithWhat, Integer> statsKills1 = new HashMap<>();
 
-	private final Map<WhoKilledWho, UserStats> statsKills2 = new HashMap<WhoKilledWho, UserStats>();
+	private final Map<WhoKilledWho, UserStats> statsKills2 = new HashMap<>();
 
-	private final Map<WeaponPerKiller, Integer> statsWeapons = new HashMap<WeaponPerKiller, Integer>();
+	private final Map<WeaponPerKiller, Integer> statsWeapons = new HashMap<>();
 
-	private final Map<String, MapResult> statsTeamFlag = new HashMap<String, MapResult>();
+	private final Map<String, MapResult> statsTeamFlag = new HashMap<>();
 
-	private final Map<UserMap, UserScore> statsUserMapScore = new HashMap<UserMap, UserScore>();
+	private final Map<UserMap, UserScore> statsUserMapScore = new HashMap<>();
 
-	private final Map<String, Serie> series = new HashMap<String, Serie>();
+	private final Map<String, Serie> series = new HashMap<>();
 
-	private final Map<HitsKey, Hits> hits = new HashMap<HitsKey, Hits>();
+	private final Map<HitsKey, Hits> hits = new HashMap<>();
 
 	public void updateEnvironmentKill(String user) {
 
@@ -199,7 +199,7 @@ public class Stats {
 	}
 
 	public Map<String, UserScore> getStatsUserScore() {
-		Map<String, UserScore> statsUserScore = new HashMap<String, UserScore>();
+		Map<String, UserScore> statsUserScore = new HashMap<>();
 		for (Entry<UserMap, UserScore> score : statsUserMapScore.entrySet()) {
 			UserMap key = score.getKey();
 			UserScore stats = statsUserScore.get(key.getUser());
@@ -339,10 +339,10 @@ public class Stats {
 		currentSerie.setStartTime(time);
 	}
 
-	public void addHit(String shouter, String shouted, BodyPart bodyPart,
+    public void addHit(String shouter, String shouted, BodyZone bodyZone,
 			Weapon weapon) {
 		HitsKey key = new HitsKey(shouter, shouted, weapon.name(),
-				bodyPart.name());
+                bodyZone.name());
 		Hits hit = hits.get(key);
 		if (hit == null) {
 			hit = new Hits();
@@ -350,7 +350,7 @@ public class Stats {
 		}
 		Hits addHit = new Hits();
 		addHit.setCount(1);
-		int damage = computeHp(bodyPart, weapon);
+        int damage = computeHp(bodyZone, weapon);
 		addHit.setHp(damage);
 		hit.add(addHit);
 
@@ -367,8 +367,8 @@ public class Stats {
 		shoutedScore.addDamageReceived(damage);
 	}
 
-	private int computeHp(BodyPart bodyPart, Weapon weapon) {
-		return DamageManager.getInstance().getDamage(weapon, bodyPart);
+    private int computeHp(BodyZone zone, Weapon weapon) {
+        return DamageManager.getInstance().getDamage(weapon, zone);
 	}
 
 }

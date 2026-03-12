@@ -8,7 +8,7 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import tb.tartifouette.utlog.HitResolver.BodyPart;
+import tb.tartifouette.utlog.HitResolver.BodyZone;
 import tb.tartifouette.utlog.HitResolver.Weapon;
 
 public class LineParser {
@@ -131,11 +131,11 @@ public class LineParser {
 			String shouter = matcher.group(3);
 			shouter = Context.getInstance().getUsername(shouter);
 			String bodyPartId = matcher.group(4);
-			BodyPart bodyPart = HitResolver.getInstance().resolveBodyPart(
+            BodyZone zone = HitResolver.getInstance().resolveBodyZone(
 					bodyPartId);
 			String weaponId = matcher.group(5);
 			Weapon weapon = HitResolver.getInstance().resolveWeapon(weaponId);
-			stats.addHit(shouter, shouted, bodyPart, weapon);
+            stats.addHit(shouter, shouted, zone, weapon);
 		}
 	}
 
