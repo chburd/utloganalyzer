@@ -20,6 +20,8 @@ public class UserScore implements Comparable<UserScore> {
 	private int damageGiven;
 	private int hitsReceived;
 	private int damageReceived;
+    private int assist;
+    private int assisted;
 
 	@Override
 	public int compareTo(UserScore o) {
@@ -41,6 +43,8 @@ public class UserScore implements Comparable<UserScore> {
 		damageGiven += value.damageGiven;
 		hitsReceived += value.hitsReceived;
 		damageReceived += value.damageReceived;
+        assist += value.assist;
+        assisted += value.assisted;
 		if (bestFragSerie < value.bestFragSerie) {
 			bestFragSerie = value.bestFragSerie;
 		}
@@ -254,5 +258,18 @@ public class UserScore implements Comparable<UserScore> {
 	public void addDamageReceived(int damage) {
 		damageReceived += damage;
 	}
+
+    public void incrementAssisted() {
+        assisted++;
+    }
+
+    public void incrementAssist() {
+        assist++;
+
+    }
+
+    public int getAssist() {
+        return assist;
+    }
 
 }

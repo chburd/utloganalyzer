@@ -25,28 +25,18 @@ public class HitResolver {
         HK69("7"),
         LR300("8"),
         G36("9"),
-        PSG1("10"),
-        HE_GREN("11"),
-        FLASH_GREN("12"),
-        SMOKE_GREN("13"),
-        SR8("14"),
+        SR8("10"),
+
         AK("15"),
-        BOMB("16"),
         NEGEV("17"),
-        P90("18"),
         M4("19"),
-        GOOMBA("20"),
-        SUICIDE("21"),
-        WORLD_DAMAGE("22"),
-        BLEEDING("23"),
-        LAVA_EXPERIMENTAL("24"),
-        FALLING("25"),
-        TRIGGER_HURT("26"),
-        WATER("27"),
-        SLIME("28"),
-        CRUSH("29"),
-        TELEFRAG("30"),
-        EXPLOSIVE("31"),
+        PSG1("21"),
+
+        HE_GRENADE("23"),
+        P90("25"),
+        HK69_GRENADE("26"),
+        FRF1("29"),
+
         UNKNOWN("-1");
 
         private final String id;
@@ -182,6 +172,5 @@ public class HitResolver {
     public Weapon resolveWeapon(String weaponId) {
         return Weapon.findFromId(weaponId);
     }
-
 
 }

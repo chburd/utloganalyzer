@@ -155,7 +155,7 @@ public class ReportGenerator {
 			File destFile = new File(destDirectory, "scores-map.csv");
 			log.info("Writing report file " + destFile.getAbsolutePath());
 			writer = new FileWriter(destFile);
-			writer.write("User;Map;Total score;# plays;# frags;# deaths;# suicides;"
+            writer.write("User;Map;Total score;# plays;# frags;# deaths;# Assists;# suicides;"
 					+ "# environment kill;# flags captured;# flags returned;# teammate kill;# killed by his teammates;"
 					+ "score / play;frags / play;retrieved flags / play;frag / death ratio;best frag serie;worst kill serie;"
 					+ "hits given;hits received;damage given;damage received" + EOL);
@@ -167,7 +167,11 @@ public class ReportGenerator {
 				sb.append(user.getKey().getUser()).append(SEMI_COLUMN).append(user.getKey().getMap())
 						.append(SEMI_COLUMN).append(value.getTotalScore()).append(SEMI_COLUMN)
 						.append(value.getNbPlays()).append(SEMI_COLUMN).append(value.getTotalFrags())
-						.append(SEMI_COLUMN).append(value.getTotalDeaths()).append(SEMI_COLUMN)
+                        .append(SEMI_COLUMN)
+                        .append(value.getTotalDeaths())
+                        .append(SEMI_COLUMN)
+                        .append(value.getAssist())
+                        .append(SEMI_COLUMN)
 						.append(value.getTotalSuicides()).append(SEMI_COLUMN).append(value.getTotalEnvironment())
 						.append(SEMI_COLUMN).append(value.getFlagsCaptured()).append(SEMI_COLUMN)
 						.append(value.getFlagsReturned()).append(SEMI_COLUMN).append(value.getTeamKiller())
@@ -194,7 +198,8 @@ public class ReportGenerator {
 			log.info("Writing report file " + destFile.getAbsolutePath());
 			writer = new FileWriter(destFile);
 
-			writer.write("User;Total score;# plays;# frags;# deaths;# suicides;# environment kill;# flags captured;"
+            writer.write(
+                    "User;Total score;# plays;# frags;# deaths;# Assists;# suicides;# environment kill;# flags captured;"
 					+ "# flags returned;# teammate kill;# killed by his teammates;score / play;frags / play;"
 					+ "retrieved flags / play;frag / death ratio;best frags serie;worst kill serie;hits given;"
 					+ "hits received;damage given;damage received" + EOL);
@@ -204,7 +209,11 @@ public class ReportGenerator {
 				StringBuilder sb = new StringBuilder();
 				sb.append(user.getKey()).append(SEMI_COLUMN).append(value.getTotalScore()).append(SEMI_COLUMN)
 						.append(value.getNbPlays()).append(SEMI_COLUMN).append(value.getTotalFrags())
-						.append(SEMI_COLUMN).append(value.getTotalDeaths()).append(SEMI_COLUMN)
+                        .append(SEMI_COLUMN)
+                        .append(value.getTotalDeaths())
+                        .append(SEMI_COLUMN)
+                        .append(value.getAssist())
+                        .append(SEMI_COLUMN)
 						.append(value.getTotalSuicides()).append(SEMI_COLUMN).append(value.getTotalEnvironment())
 						.append(SEMI_COLUMN).append(value.getFlagsCaptured()).append(SEMI_COLUMN)
 						.append(value.getFlagsReturned()).append(SEMI_COLUMN).append(value.getTeamKiller())

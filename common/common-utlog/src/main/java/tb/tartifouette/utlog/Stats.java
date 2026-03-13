@@ -371,4 +371,17 @@ public class Stats {
         return DamageManager.getInstance().getDamage(weapon, zone);
 	}
 
+    public void updateAssistant(String user) {
+        UserMap userMap = new UserMap(user, Context.getInstance().getCurrentMap());
+        UserScore existingScore = getOrInitExistingScore(userMap);
+        existingScore.incrementAssist();
+
+    }
+
+    public void updateAssiste(String user) {
+        UserMap userMap = new UserMap(user, Context.getInstance().getCurrentMap());
+        UserScore existingScore = getOrInitExistingScore(userMap);
+        existingScore.incrementAssisted();
+    }
+
 }
