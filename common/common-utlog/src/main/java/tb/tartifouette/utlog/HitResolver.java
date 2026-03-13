@@ -36,8 +36,17 @@ public class HitResolver {
         P90("18"),
         M4("19"),
         GOOMBA("20"),
-        UNKNOWN21("21"),
-        UNKNOWN22("22"),
+        SUICIDE("21"),
+        WORLD_DAMAGE("22"),
+        BLEEDING("23"),
+        LAVA_EXPERIMENTAL("24"),
+        FALLING("25"),
+        TRIGGER_HURT("26"),
+        WATER("27"),
+        SLIME("28"),
+        CRUSH("29"),
+        TELEFRAG("30"),
+        EXPLOSIVE("31"),
         UNKNOWN("-1");
 
         private final String id;
@@ -173,5 +182,6 @@ public class HitResolver {
     public Weapon resolveWeapon(String weaponId) {
         return Weapon.findFromId(weaponId);
     }
+
 
 }
